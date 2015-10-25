@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>binPow</Title>
+      <Author>Van</Author>
+      <Description>Primes Generator</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>binPow</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>Init_r</ID>
+          <ToolTip>Init_r</ToolTip>
+          <Default>r = 1;</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Mul_r_by_b</ID>
+          <ToolTip>Mul_r_by_b</ToolTip>
+          <Default>r = r * b;</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Power_b_by_b</ID>
+          <ToolTip>Power_b_by_b</ToolTip>
+          <Default>b = b * b;</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[void _bin_pow($type$ b, int p, $type$ &r) {
+    $Init_r$ // init r as zero element in goup
+    while (p) {
+        if(p & 1) {
+            $Mul_r_by_b$ // multiply r by b
+        }
+        $Power_b_by_b$ // power b by b
+        p >>= 1;
+    }
+}
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

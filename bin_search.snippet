@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>binSearch</Title>
+      <Author>Van</Author>
+      <Description>Primes Generator</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>binSearch</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[template<typename T>
+T _binary_search(T l, T r, function<bool (T)> f, bool take_right = false) {
+    while (l <= r) {
+        T mid = (l + r) / 2;
+        bool res = f(mid);
+        if (res)
+            r = mid - 1;
+        else
+            l = mid + 1;
+    }
+    return take_right ? l : r;
+}
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

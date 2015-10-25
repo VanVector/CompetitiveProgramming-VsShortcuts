@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>mcpy</Title>
+      <Author>Van</Author>
+      <Description>Call memcpy</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>mcpy</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>source</ID>
+          <ToolTip>Source</ToolTip>
+          <Default>source</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>dest</ID>
+          <ToolTip>Destination</ToolTip>
+          <Default>dest</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[memcpy($dest$, $source$, sizeof($source$));$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

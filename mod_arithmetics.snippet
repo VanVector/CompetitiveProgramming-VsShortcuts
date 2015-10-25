@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>modArithmetic</Title>
+      <Author>Van</Author>
+      <Description>Modular Arithmetic</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>modArithmetic</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MOD_NAME</ID>
+          <ToolTip>MOD</ToolTip>
+          <Default>MOD</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>MOD_VALUE</ID>
+          <ToolTip>BASE</ToolTip>
+          <Default>int(1e9) + 7</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[const int $MOD_NAME$ = $MOD_VALUE$;
+inline int add(int a, int b) { return (a + b >= $MOD_NAME$) ? (a + b - $MOD_NAME$) : (a + b); }
+inline int sub(int a, int b) { return (a - b < 0) ? (a - b + $MOD_NAME$) : (a - b); }
+inline void inc(int &a, int b) { a = add(a, b); }
+inline int negate(int a) { return $MOD_NAME$ - a; }
+inline int mul(int a, int b) { return (a * 1ll * b) % $MOD_NAME$; }
+int bin_pow(int b, int p) {
+    int r = 1;
+    while (p) {
+        if (p & 1)
+            r = mul(r, b);
+        b = mul(b, b);
+        p >>= 1;
+    }
+    return r;
+}
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

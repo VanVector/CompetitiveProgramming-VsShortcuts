@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>generatePrimes</Title>
+      <Author>Van</Author>
+      <Description>Primes Generator</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>generatePrimes</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MaxPrime</ID>
+          <ToolTip>MaxPrime</ToolTip>
+          <Default>1e6</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[const int MAX_PRIME = $MaxPrime$;
+int pr[MAX_PRIME / 10] = { 0 };
+int np = 0;
+
+void generate_primes() {
+    pr[np++] = 2;
+    for (int i = 3; i <= MAX_PRIME; i++) {
+        bool isp = true;
+        for (int j = 0; 1LL * pr[j] * pr[j] <= i; j++)
+            if (i % pr[j] == 0)
+                isp = false;
+        if (isp)
+            pr[np++] = i;
+    }
+}
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
