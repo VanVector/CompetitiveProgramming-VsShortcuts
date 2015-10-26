@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>geometryInt</Title>
+      <Author>Van</Author>
+      <Description>2D Geometry with Int</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>geometryInt</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[
+#pragma region geometry_int
+// see http://e-maxx.ru/bookz/files/andreeva.pdf for geometry
+// coords should be in [-1e9, 1e9]
+
+int sign(double x) { return x < -eps ? -1 : x < eps ? 0 : 1; }
+bool between(lli l, lli r, lli x) {
+    if (l > r) swap(l, r);
+    return l <= x && x <= r;
+}
+
+struct Point {
+    lli x, y;
+    Point(lli _x, lli _y) : x(_x), y(_y) {}
+    Point() {}
+
+    Point operator +(const Point &b) const { return Point(x + b.x, y + b.y); }
+    Point operator -(const Point &b) const { return Point(x - b.x, y - b.y); }
+    bool operator ==(const Point b) const { return x == b.x && y == b.y; }
+    bool operator<(const Point &p) const { return x != p.x ? x < p.x : y < p.y; }
+
+    Point operator *(const lli m) const { return Point(x * m, y * m); }
+    Point operator /(const lli m) const { assert(m != 0);  return Point(x / m, y / m); }
+    double lengthSqr() const { return x * x + y * y; }
+    double length() const { return sqrt(lengthSqr()); }
+
+    // cross product
+    double operator>>(const Point &p) const { return x * p.y - y * p.x; }
+    double operator<<(const Point &p) const { return p.x * y - p.y * x; }
+    double operator||(const Point &p) const { return *this >> p == 0; }
+
+    // scalar/dot product
+    double operator*(const Point &p) const { return x * p.x + y * p.y; }
+
+    void eprint() {
+        eprintf("DEBUG: (%lld, %lld)\n", x, y);
+    }
+};
+
+// Check if two vectors are collinear
+bool colinear(const Point p1, const Point p2) {
+    return p1 || p2;
+}
+
+// Check if two vectors are unidirected
+bool unidirected(const Point p1, const Point p2) {
+    if (!(p1 || p2))
+        return false;
+    return p1.x * p2.x > 0 && p1.y * p2.y > 0;
+}
+
+// Check if two vectors are orthogonal
+bool orthogonal(const Point p1, const Point p2) {
+    return p1 * p2 == 0;
+}
+
+struct Line {
+    lli a, b, c;
+    Line() : a(0), b(0), c(1) {}
+    Line(const Point &p1, const Point &p2) {
+        a = p1.y - p2.y;
+        b = p2.x - p1.x;
+        c = -a * p1.x - b * p1.y;
+    }
+    Line(lli a, lli b, lli c) : a(a), b(b), c(c) {}
+    Point normal() const { return  Point(a, b); }
+    double normalSqr() const { return a * a + b * b; }
+    double substitute(const Point &p) const { return a * p.x + b * p.y + c; }
+    int side(const Point &p) const { return sign(substitute(p)); }
+
+    // check if two lines coincide
+    bool operator==(Line l) {
+        return a * l.b == b * l.a && b * l.c == c * l.b;
+    }
+
+    // check if two lines are parallel
+    bool operator||(Line l) {
+        return a * l.b == b * l.a;
+    }
+};
+
+struct Segment {
+    Point a, b;
+    Segment() {}
+    Segment(const Point _a, const Point _b) : a(_a), b(_b) {}
+
+    // returns true if point lies on the segment
+    bool operator&& (const Point p) const {
+        if (!colinear(p - a, p - b)) return false;
+        return between(a.x, b.x, p.x) && between(a.y, b.y, p.y);
+    }
+};
+#pragma endregion geometry_int
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
