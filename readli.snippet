@@ -5,28 +5,24 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>gcd</Title>
+      <Title>readli</Title>
       <Author>Van</Author>
-      <Description>Gcd Function</Description>
+      <Description>Reading by scanf</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>gcd</Shortcut>
+      <Shortcut>readli</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
         <Literal Editable="true">
-          <ID>type</ID>
-          <ToolTip>type of arguments and return value</ToolTip>
-          <Default>int</Default>
+          <ID>value</ID>
+          <ToolTip>Value to read</ToolTip>
+          <Default>val</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[$type$ gcd($type$ a, $type$ b) {
-    return a % b == 0 ? b : gcd(b, a % b);
-}
-
-$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[scanf("%lld", &$value$);$end$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

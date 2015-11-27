@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>complex</Title>
+      <Author>Van</Author>
+      <Description>Writing by printf</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>complex</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[#pragma region Complex
+struct complex {
+public:
+    long double re, im;
+    complex() { re = 0; im = 0; }
+    complex(long double _x, long double _y) { re = _x; im = _y; }
+    complex(long double _x) { re = _x; im = 0; };
+    complex operator +(complex c);
+    void operator *= (complex c);
+    void operator /= (complex c);
+    complex operator -(complex c);
+    complex operator *(complex c);
+    complex operator /(complex c);
+};
+
+complex complex::operator +(complex c) {
+    complex res;
+    res.re = re + c.re;
+    res.im = im + c.im;
+    return res;
+}
+
+complex complex::operator -(complex c) {
+    complex res;
+    res.re = re - c.re;
+    res.im = im - c.im;
+    return res;
+}
+
+complex complex::operator *(complex c) {
+    complex res;
+    res.re = re * c.re - c.im * im;
+    res.im = re * c.im + im * c.re;
+    return res;
+}
+
+complex complex::operator /(complex c) {
+    complex res;
+    res.re = (re * c.re + im * c.im) / (c.re * c.re + c.im * c.im);
+    res.im = (im * c.re - re * c.im) / (c.re * c.re + c.im * c.im);
+    return res;
+}
+
+void complex::operator *=(complex c) {
+    *this = *this * c;
+}
+
+void complex::operator /=(complex c) {
+    *this = *this / c;
+}
+#pragma endregion
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

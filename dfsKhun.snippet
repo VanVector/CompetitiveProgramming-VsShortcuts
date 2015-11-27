@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>dfsKhun</Title>
+      <Author>Van</Author>
+      <Description>DFS Khun</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>dfsKhun</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[#pragma region DFS Khun
+const int MAX1 = 1e5 + 10, MAX2 = 1e5 + 10;
+vector<int> g[MAX1];
+int used[MAX1] = { 0 };
+int match[MAX2] = { 0 };
+
+bool dfsKhun(int v) {
+    if (used[v]) return false;
+    used[v] = true;
+    for (int i = 0; i < g[v].size(); i++) {
+        int to = g[v][i];
+        // if there is no match for to or if we can find another match for to's match instead of to
+        if (match[to] == -1 || dfsKhun(match[to])) {
+            match[to] = v; // we found an increasing chain
+            return true;
+        }
+    }
+    return false;
+}
+
+#pragma region Usage
+/*
+...
+memset(match, -1, sizeof(match));
+for (int v = 0; v < n1; v++) {
+    memset(used, 0, sizeof(used));
+    dfsKhun(v);
+}
+...
+*/
+#pragma endregion
+#pragma endregion
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>lca</Title>
+      <Author>Van</Author>
+      <Description>Least Common Ancestor</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lca</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>logVertexNumber</ID>
+          <ToolTip>logVertexNumber</ToolTip>
+          <Default>32</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region LCA
+//void dfs(int v, int p = 0) {
+//    tin[v] = time++;
+//    for (int i = 0; i < MAX_POW; ++i)
+//        up[v][i] = i ? up[up[v][i - 1]][i - 1] : p;
+//    ... dfs ...
+//    tout[v] = time++;
+//}
+const int MAX_POW = $logVertexNumber$; // log(max length to the root)
+
+int tin[MAX] = { 0 };
+int tout[MAX] = { 0 };
+int time = 0;
+int up[MAX][MAX_POW] = { 0 };
+
+inline bool upper(const int &u, const int &v) {
+    return tin[u] <= tin[v] && tout[u] >= tout[v];
+}
+
+int getLca(int u, int v) {
+    if (upper(u, v)) return u;
+    if (upper(v, u)) return v;
+    for (int i = MAX_POW - 1; i >= 0; i--)
+        if (!upper(up[u][i], v))
+            u = up[u][i];
+    return up[u][0];
+}
+#pragma endregion
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

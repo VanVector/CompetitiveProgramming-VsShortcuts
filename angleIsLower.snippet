@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>angleIsLower</Title>
+      <Author>Van</Author>
+      <Description>Compares two angles without using double</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>angleIsLower</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[
+#pragma region Angle Comparison
+// Can be used when there exist y and x arguments for atan2(y, x) function.
+int getQ(lli x, lli y) {
+    if (x < 0 && y < 0)
+        return 6;
+    else if (x == 0 && y < 0)
+        return 7;
+    else if (x > 0 && y < 0)
+        return 8;
+    else if (x > 0 && y == 0)
+        return 1;
+    else if (x > 0 && y > 0)
+        return 2;
+    else if (x == 0 && y > 0)
+        return 3;
+    else if (x < 0 && y > 0)
+        return 4;
+    else if(x < 0 && y == 0)
+        return 5;
+}
+
+bool angleIsLower(lli x1, lli y1, lli x2, lli y2) {
+    int q1 = getQ(x1, y1);
+    int q2 = getQ(x2, y2);
+    if (q1 != q2)
+        return q1 < q2;
+    return y1 * x2 < y2 * x1;
+}
+#pragma endregion Angle Comparison
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

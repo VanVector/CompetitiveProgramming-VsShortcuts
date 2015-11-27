@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>modArithmetic</Title>
+      <Author>Van</Author>
+      <Description>Modular Arithmetic</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>modArithmetic</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MOD_NAME</ID>
+          <ToolTip>MOD</ToolTip>
+          <Default>MOD</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>MOD_VALUE</ID>
+          <ToolTip>BASE</ToolTip>
+          <Default>int(1e9) + 7</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Modular Arithmetic
+const int $MOD_NAME$ = $MOD_VALUE$;
+inline int add(const int a, const int b, const int mod = $MOD_NAME$) { return (a + b >= mod) ? (a + b - mod) : (a + b); }
+inline int sub(const int a, const int b, const int mod = $MOD_NAME$) { return (a - b < 0) ? (a - b + mod) : (a - b); }
+inline void inc(int &a, const int b, const int mod = $MOD_NAME$) { a = add(a, b, mod); }
+inline int negate(const int a, const int mod = $MOD_NAME$) { return mod - a; }
+inline int mul(const int a, const int b, const int mod = $MOD_NAME$) { return (a * 1ll * b) % mod; }
+int binPow(int b, int p, const int mod = $MOD_NAME$) {
+    int r = 1;
+    while (p) {
+        if (p & 1)
+            r = mul(r, b, mod);
+        b = mul(b, b, mod);
+        p >>= 1;
+    }
+    return r;
+}
+int inv(const int a, const int mod = $MOD_NAME$) {   // assuming that $MOD_NAME$ is prime (Fermat's little theorem)
+    int res = binPow(a, mod - 2, mod);
+    return res;
+}
+inline int dvd(const int a, const int b, const int mod = $MOD_NAME$) { return mul(a, inv(b, mod), mod); } // b != 0
+#pragma endregion
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -7,7 +7,7 @@
       </SnippetTypes>
       <Title>binSearch</Title>
       <Author>Van</Author>
-      <Description>Primes Generator</Description>
+      <Description>Binary Search Function</Description>
       <HelpUrl>
       </HelpUrl>
       <Shortcut>binSearch</Shortcut>
@@ -16,7 +16,7 @@
       <Declarations>
       </Declarations>
       <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[template<typename T>
-T _binary_search(T l, T r, function<bool (T)> f, bool take_right = false) {
+T binSearch(T l, T r, function<bool (T)> f, bool take_right = false) {
     while (l <= r) {
         T mid = (l + r) / 2;
         bool res = f(mid);

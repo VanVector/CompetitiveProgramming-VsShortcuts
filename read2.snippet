@@ -5,54 +5,45 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>multitestMain</Title>
+      <Title>read2</Title>
       <Author>Van</Author>
-      <Description>Reading by scanf in multitest main with clear and solve</Description>
+      <Description>Reading by scanf</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>multitestMain</Shortcut>
+      <Shortcut>read2</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
         <Literal Editable="true">
-          <ID>char</ID>
-          <ToolTip>Read specificator</ToolTip>
+          <ID>char1</ID>
+          <ToolTip>char1</ToolTip>
           <Default>d</Default>
           <Function>
           </Function>
         </Literal>
         <Literal Editable="true">
-          <ID>value</ID>
-          <ToolTip>Value to read</ToolTip>
-          <Default>val</Default>
+          <ID>char2</ID>
+          <ToolTip>char2</ToolTip>
+          <Default>d</Default>
           <Function>
           </Function>
         </Literal>
         <Literal Editable="true">
-          <ID>number_of_input</ID>
-          <ToolTip>number_of_input</ToolTip>
-          <Default>1</Default>
+          <ID>value2</ID>
+          <ToolTip>value2</ToolTip>
+          <Default>value2</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>value1</ID>
+          <ToolTip>value1</ToolTip>
+          <Default>value1</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[void clear() {
-}
-
-void solve() {
-	$end$
-}
-	  
-int main() {
-#ifdef _LOCAL_VAN
-    freopen("in.txt", "r", stdin);
-#endif
-	while(scanf("%$char$", $value$) == $number_of_input$) {
-		clear();
-		solve();
-	}
-    return 0;
-}]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[scanf("%$char1$%$char2$", &$value1$, &$value2$);$end$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

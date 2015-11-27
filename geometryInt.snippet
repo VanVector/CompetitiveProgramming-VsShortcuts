@@ -38,16 +38,16 @@ struct Point {
 
     Point operator *(const lli m) const { return Point(x * m, y * m); }
     Point operator /(const lli m) const { assert(m != 0);  return Point(x / m, y / m); }
-    double lengthSqr() const { return x * x + y * y; }
-    double length() const { return sqrt(lengthSqr()); }
+    lli lengthSqr() const { return x * x + y * y; }
+    double length() const { return sqrt(1. * lengthSqr()); }
 
     // cross product
-    double operator>>(const Point &p) const { return x * p.y - y * p.x; }
-    double operator<<(const Point &p) const { return p.x * y - p.y * x; }
-    double operator||(const Point &p) const { return *this >> p == 0; }
+    lli operator>>(const Point &p) const { return x * p.y - y * p.x; }
+    lli operator<<(const Point &p) const { return p.x * y - p.y * x; }
+    bool operator||(const Point &p) const { return *this >> p == 0; }
 
     // scalar/dot product
-    double operator*(const Point &p) const { return x * p.x + y * p.y; }
+    lli operator*(const Point &p) const { return x * p.x + y * p.y; }
 
     void eprint() {
         eprintf("DEBUG: (%lld, %lld)\n", x, y);

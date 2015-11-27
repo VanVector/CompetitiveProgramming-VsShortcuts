@@ -46,7 +46,7 @@ struct Point {
     // cross product
     double operator>>(const Point &p) const { return x * p.y - y * p.x; }
     double operator<<(const Point &p) const { return p.x * y - p.y * x; }
-    double operator||(const Point &p) const { return fabs(*this >> p) < eps; }
+    bool operator||(const Point &p) const { return fabs(*this >> p) < eps; }
 
     // scalar/dot product
     double operator*(const Point &p) const { return x * p.x + y * p.y; }
@@ -120,18 +120,18 @@ struct Segment {
     Segment(const Point _a, const Point _b) : a(_a), b(_b) {}
 
     // returns true if point lies on the segment
-    bool operator&& (const Point p) const {
-        if ((p - a) >> (p - b) != 0) return false;
+    bool operator&& (const Point &p) const {
+        if (fabs((p - a) >> (p - b)) > eps) return false;
         return between(a.x, b.x, p.x) && between(a.y, b.y, p.y);
     }
 
     // Returns either two points defining the end of common segment
     // or signle intersection point,
     // or empty collection when there is no intersection.
-    vector<Point> operator& (const Segment s) const {
+    vector<Point> operator& (const Segment &s) const {
         Point b1 = b, a1 = a;
         Point b2 = s.b, a2 = s.a;
-        if ((b1 - a1) * (b2 - a2) == 0) {
+        if (fabs((b1 - a1) * (b2 - a2)) < eps) {
             if (b1 < a1) swap(a1, b1);
             if (b2 < a2) swap(a2, b2);
             if (a2 < a1) swap(a1, a2), swap(b1, b2);

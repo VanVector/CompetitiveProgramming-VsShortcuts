@@ -5,31 +5,31 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>read</Title>
+      <Title>read2i</Title>
       <Author>Van</Author>
       <Description>Reading by scanf</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>read</Shortcut>
+      <Shortcut>read2i</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
         <Literal Editable="true">
-          <ID>char</ID>
-          <ToolTip>Read specificator</ToolTip>
-          <Default>d</Default>
+          <ID>value2</ID>
+          <ToolTip>value2</ToolTip>
+          <Default>value2</Default>
           <Function>
           </Function>
         </Literal>
         <Literal Editable="true">
-          <ID>value</ID>
-          <ToolTip>Value to read</ToolTip>
-          <Default>val</Default>
+          <ID>value1</ID>
+          <ToolTip>value1</ToolTip>
+          <Default>value1</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[scanf("%$char$", &$value$);$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[scanf("%d%d", &$value1$, &$value2$);$end$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

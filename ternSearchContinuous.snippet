@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>ternarySearchContinuous</Title>
+      <Author>Van</Author>
+      <Description>Ternary Search Function</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>ternarySearchContinuous</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>val</ID>
+          <ToolTip>val</ToolTip>
+          <Default>1e-9</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ret</ID>
+          <ToolTip>ret</ToolTip>
+          <Default>f(l)</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Ternary Search Continuous
+const double eps = $val$;
+enum Opt { Min, Max };
+double ternarySearch(Opt opt, double l, double r, const function<double(double)> f) {
+    while (l + eps < r) {
+        double m1 = l + (r - l) / 3,  m2 = r - (r - l) / 3;
+        if (f(m1) > f(m2))
+            if (opt == Opt::Max) r = m2; else l = m1;
+        else
+            if (opt == Opt::Max) l = m1; else r = m2;
+    }
+    return $ret$;
+}
+double ternarySearchMin(double l, double r, const function<double(double)> f) { return ternSearch(Opt::Min, l, r, f); }
+double ternarySearchMax(double l, double r, const function<double(double)> f) { return ternSearch(Opt::Max, l, r, f); }
+#pragma endregion
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

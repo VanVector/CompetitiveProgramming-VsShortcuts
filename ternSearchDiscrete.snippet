@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>ternarySearchDiscrete</Title>
+      <Author>Van</Author>
+      <Description>Ternary Search Function</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>ternarySearchDiscrete</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>idxType</ID>
+          <ToolTip>Index Type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>fRetType</ID>
+          <ToolTip>fRetType</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>retType</ID>
+          <ToolTip>retType</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ret</ID>
+          <ToolTip>ret</ToolTip>
+          <Default>fRes</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Ternary Search Discrete
+// Plateau is resolved by takeRight argument.
+enum Opt { Min, Max };
+$retType$ ternarySearch(Opt opt, $idxType$ l, $idxType$ r, const function<$fRetType$($idxType$)> f, bool takeRight = false) {
+    while (l + 3 <= r) {
+        $idxType$ m1 = l + (r - l) / 3, m2 = r - (r - l) / 3;
+        $fRetType$ f1 = f(m1), f2 = f(m2);
+        l = (opt == Opt::Min && f1 > f2 || opt == Opt::Max && f1 < f2 || takeRight && f1 == f2) ? m1 : l;
+        r = (opt == Opt::Min && f2 > f1 || opt == Opt::Max && f2 < f1 || !takeRight && f1 == f2) ? m2 : r;
+    }
+    $idxType$ res = l; $fRetType$ fRes = f(l);
+    for (int i = l + 1; i <= r; i++) {
+        $fRetType$ fi = f(i);
+        if(opt == Opt::Max && fRes < fi || opt == Opt::Min && fRes > fi) { fRes = fi, res = i; }
+    }
+    return $ret$;
+}
+$retType$ ternarySearchMin($idxType$ l, $idxType$ r, const function<$fRetType$($idxType$)> f, bool takeRight = false) { return ternarySearch(Opt::Min, l, r, f, takeRight); }
+$retType$ ternarySearchMax($idxType$ l, $idxType$ r, const function<$fRetType$($idxType$)> f, bool takeRight = false) { return ternarySearch(Opt::Max, l, r, f, takeRight); }
+#pragma endregion
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

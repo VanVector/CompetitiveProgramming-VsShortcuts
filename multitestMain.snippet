@@ -5,12 +5,12 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>read</Title>
+      <Title>multitestMain</Title>
       <Author>Van</Author>
-      <Description>Reading by scanf</Description>
+      <Description>Reading by scanf in multitest main with clear and solve</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>read</Shortcut>
+      <Shortcut>multitestMain</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
@@ -28,8 +28,34 @@
           <Function>
           </Function>
         </Literal>
+        <Literal Editable="true">
+          <ID>number_of_input</ID>
+          <ToolTip>number_of_input</ToolTip>
+          <Default>1</Default>
+          <Function>
+          </Function>
+        </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[scanf("%$char$", &$value$);$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[void clear() {
+}
+
+void solve() {
+	$end$
+}
+	  
+void main() {
+#ifdef _LOCAL_VAN
+    freopen("in.txt", "r", stdin);
+#endif
+	while(scanf("%$char$", $value$) == $number_of_input$) {
+		clear();
+		solve();
+#ifndef _LOCAL_VAN
+        return;
+#endif
+	}
+    return;
+}]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

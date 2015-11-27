@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>fft</Title>
+      <Author>Van</Author>
+      <Description>Fast Fourier Transform</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>fft</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MAXPOW</ID>
+          <ToolTip>MAXPOW</ToolTip>
+          <Default>18</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[#pragma region FFT
+const double PI = acos(-1.);
+
+struct complex {
+public:
+    long double re, im;
+    complex() { re = 0; im = 0; }
+    complex(long double _x, long double _y) { re = _x; im = _y; }
+    complex(long double _x) { re = _x; im = 0; };
+    complex operator +(const complex &c);
+    void operator *= (const complex &c);
+    void operator /= (const complex &c);
+    complex operator -(const complex &c);
+    complex operator *(const complex &c);
+    complex operator /(const complex &c);
+};
+
+complex complex::operator +(const complex &c) { return complex(re + c.re, im + c.im); }
+complex complex::operator -(const complex &c) { return complex(re - c.re, im - c.im); }
+complex complex::operator *(const complex &c) { return complex(re * c.re - c.im * im, re * c.im + im * c.re); }
+complex complex::operator /(const complex &c) { return complex((re * c.re + im * c.im) / (c.re * c.re + c.im * c.im), (im * c.re - re * c.im) / (c.re * c.re + c.im * c.im)); }
+void complex::operator *=(const complex &c) { *this = *this * c; }
+void complex::operator /=(const complex &c) { *this = *this / c; }
+
+complex w[1 << $MAXPOW$];
+
+int rev(const int &i, const int &logN) {
+    int res = 0;
+    for (int b = 0; b < logN; b++)
+        if (i & (1 << b))
+            res |= (1 << (logN - b - 1));
+    return res;
+}
+
+int getLog(const int &n) {
+    int p = 0;
+    while ((1 << p) < n) p++;
+    return p;
+}
+
+void fft(complex a[], const int &n, const bool &invert = false) {
+    int logN = getLog(n);
+    for (int i = 0; i < n; i++) {
+        int revi = rev(i, logN);
+        if (i < revi)
+            swap(a[i], a[revi]);
+    }
+
+    for (int l = 2; l <= n; l <<= 1) {
+        int ld2 = l >> 1;
+        for (int i = 0; i < ld2; i++) {
+            double ang = 2 * PI * i / l * (invert ? -1 : +1);
+            w[i] = complex(cos(ang), sin(ang));
+        }
+
+        for (int i = 0; i < n; i += l) {
+            for (int j = 0; j < ld2; j++) {
+                complex u = a[j + i], v = w[j] * a[j + i + ld2];
+                a[j + i] = u + v;
+                a[j + i + ld2] = u - v;
+                if (invert) a[j + i] /= 2, a[j + i + ld2] /= 2;
+            }
+        }
+    }
+}
+
+inline void ifft(complex a[], const int &n) { fft(a, n, true); }
+#pragma endregion
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

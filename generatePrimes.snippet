@@ -22,11 +22,12 @@
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[const int MAX_PRIME = $MaxPrime$;
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Prime Generator
+const int MAX_PRIME = $MaxPrime$;
 int pr[MAX_PRIME / 10] = { 0 };
 int np = 0;
 
-void generate_primes() {
+void generatePrimes() {
     pr[np++] = 2;
     for (int i = 3; i <= MAX_PRIME; i++) {
         bool isp = true;
@@ -37,6 +38,7 @@ void generate_primes() {
             pr[np++] = i;
     }
 }
+#pragma endregion
 
 $end$]]></Code>
     </Snippet>
