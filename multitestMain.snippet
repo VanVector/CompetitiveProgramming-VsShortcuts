@@ -43,7 +43,7 @@ void solve() {
 	$end$
 }
 	  
-void main() {
+int main() {
 #ifdef _LOCAL_VAN
     freopen("in.txt", "r", stdin);
 #endif
@@ -51,10 +51,10 @@ void main() {
 		clear();
 		solve();
 #ifndef _LOCAL_VAN
-        return;
+        return 0;
 #endif
 	}
-    return;
+    return 0;
 }]]></Code>
     </Snippet>
   </CodeSnippet>
