@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>lazydp2</Title>
+      <Author>Van</Author>
+      <Description>Lazy DP template</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lazydp2</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>arg1</ID>
+          <ToolTip>arg1</ToolTip>
+          <Default>i</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>arg2</ID>
+          <ToolTip>arg2</ToolTip>
+          <Default>j</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[// TODO: memset(dp, -1, sizeof(dp)); Base cases dp[0] = 1, for example
+$type$ getDp(int $arg1$, int $arg2$) {
+    // handle induction base cases here
+    if(dp[$arg1$][$arg2$] == -1) {
+        $type$ r = 0;
+        $end$
+        dp[$arg1$][$arg2$] = r;
+    }
+    return dp[$arg1$][$arg2$];
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

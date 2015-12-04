@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>lazydp</Title>
+      <Author>Van</Author>
+      <Description>Lazy DP template</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lazydp</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>arg</ID>
+          <ToolTip>arg</ToolTip>
+          <Default>i</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[// TODO: memset(dp, -1, sizeof(dp)); Base cases dp[0] = 1, for example
+$type$ getDp(int $arg$) {
+    // handle induction base cases here
+    if(dp[$arg$] == -1) {
+        $type$ r = 0;
+        $end$
+        dp[$arg$] = r;
+    }
+    return stateContainer;
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

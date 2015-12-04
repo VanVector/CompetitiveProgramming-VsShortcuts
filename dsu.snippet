@@ -13,33 +13,33 @@
       <Shortcut>dsu</Shortcut>
     </Header>
     <Snippet>
-      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[namespace DSU {
-    int parent[MAX] = { 0 };
-    int rank[MAX] = { 0 };
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region DSU
+int parent[MAX] = { 0 };
+int rank[MAX] = { 0 };
 
-    void make_set(int v) {
-        parent[v] = v;
-        rank[v] = 0;
-    }
+void makeSet(int v) {
+    parent[v] = v;
+    rank[v] = 0;
+}
 
-    int find_set(int v) {
-        if (v == parent[v])
-            return v;
-        return parent[v] = find_set(parent[v]);
-    }
+int findSet(int v) {
+    if (v == parent[v])
+        return v;
+    return parent[v] = findSet(parent[v]);
+}
 
-    void union_sets(int a, int b) {
-        a = find_set(a);
-        b = find_set(b);
-        if (a != b) {
-            if (rank[a] < rank[b])
-                swap(a, b);
-            parent[b] = a;
-            if (rank[a] == rank[b])
-                ++rank[a];
-        }
+void unionSets(int a, int b) {
+    a = findSet(a);
+    b = findSet(b);
+    if (a != b) {
+        if (rank[a] < rank[b])
+            swap(a, b);
+        parent[b] = a;
+        if (rank[a] == rank[b])
+            ++rank[a];
     }
 }
+#pragma endregion DSU
 $end$]]></Code>
     </Snippet>
   </CodeSnippet>
