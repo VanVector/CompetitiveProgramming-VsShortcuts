@@ -18,19 +18,20 @@
       <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[
 #pragma region geometry_double
 // see http://e-maxx.ru/bookz/files/andreeva.pdf for geometry
+typedeg long double ld;
 
-const double PI = 3.1415926535897932384626433832795;
-const double eps = 1e-9;
+const ld PI = acos(-1.0);
+const ld eps = 1e-9;
 
-int sign(double x) { return x < -eps ? -1 : x < eps ? 0 : 1; }
-bool between(double l, double r, double x) {
+int sign(ld x) { return x < -eps ? -1 : x < eps ? 0 : 1; }
+bool between(ld l, ld r, ld x) {
     if (l > r) swap(l, r);
     return l <= x + eps && x - eps <= r;
 }
 
 struct Point {
-    double x, y;
-    Point(double _x, double _y) : x(_x), y(_y) {}
+    ld x, y;
+    Point(ld _x, ld _y) : x(_x), y(_y) {}
     Point() {}
 
     Point operator +(const Point &b) const { return Point(x + b.x, y + b.y); }
@@ -38,18 +39,18 @@ struct Point {
     bool operator ==(const Point b) const { return fabs(x - b.x) < eps && fabs(y - b.y) < eps; }
     bool operator<(const Point &p) const { return fabs(x - p.x) > eps ? x < p.x : y < p.y - eps; }
 
-    Point operator *(const double m) const { return Point(x * m, y * m); }
-    Point operator /(const double m) const { assert(m != 0);  return Point(x / m, y / m); }
-    double lengthSqr() const { return x * x + y * y; }
-    double length() const { return sqrt(lengthSqr()); }
+    Point operator *(const ld m) const { return Point(x * m, y * m); }
+    Point operator /(const ld m) const { assert(m != 0);  return Point(x / m, y / m); }
+    ld lengthSqr() const { return x * x + y * y; }
+    ld length() const { return sqrt(lengthSqr()); }
 
     // cross product
-    double operator>>(const Point &p) const { return x * p.y - y * p.x; }
-    double operator<<(const Point &p) const { return p.x * y - p.y * x; }
+    ld operator>>(const Point &p) const { return x * p.y - y * p.x; }
+    ld operator<<(const Point &p) const { return p.x * y - p.y * x; }
     bool operator||(const Point &p) const { return fabs(*this >> p) < eps; }
 
     // scalar/dot product
-    double operator*(const Point &p) const { return x * p.x + y * p.y; }
+    ld operator*(const Point &p) const { return x * p.x + y * p.y; }
 
     void eprint() {
         eprintf("DEBUG: (%lf, %lf)\n", x, y);
@@ -74,21 +75,21 @@ bool orthogonal(const Point p1, const Point p2) {
 }
 
 struct Line {
-    double a, b, c;
+    ld a, b, c;
     Line() : a(0), b(0), c(1) {}
     Line(const Point &p1, const Point &p2) {
         a = p1.y - p2.y;
         b = p2.x - p1.x;
         c = -a * p1.x - b * p1.y;
     }
-    Line(double a, double b, double c) : a(a), b(b), c(c) {}
+    Line(ld a, ld b, ld c) : a(a), b(b), c(c) {}
     Point normal() const { return  Point(a, b); }
-    double normalSqr() const { return a * a + b * b; }
+    ld normalSqr() const { return a * a + b * b; }
     // norimalized line equation
-    Line normalized() const { assert(fabs(a) > eps && fabs(b) > eps); double normalLength = sqrt(normalSqr());  return Line(a / normalLength, b / normalLength, c / normalLength); }
-    double substitute(const Point &p) const { return a * p.x + b * p.y + c; }
-    double distanceSigned(const Point &p) const { return substitute(p) / sqrt(normalSqr()); }
-    double distance(const Point &p) const { return fabs(substitute(p)) / sqrt(normalSqr()); }
+    Line normalized() const { assert(fabs(a) > eps || fabs(b) > eps); ld normalLength = sqrt(normalSqr());  return Line(a / normalLength, b / normalLength, c / normalLength); }
+    ld substitute(const Point &p) const { return a * p.x + b * p.y + c; }
+    ld distanceSigned(const Point &p) const { return substitute(p) / sqrt(normalSqr()); }
+    ld distance(const Point &p) const { return fabs(substitute(p)) / sqrt(normalSqr()); }
     int side(const Point &p) const { return sign(substitute(p)); }
 
     // check if two lines coincide
@@ -105,7 +106,7 @@ struct Line {
     // Lines should not be parallel or coincide.
     Point operator&(const Line l) {
         assert(!(*this || l));
-        double d = a * l.b - b * l.a;
+        ld d = a * l.b - b * l.a;
         assert(fabs(d) > eps);
         Point res((b * l.c - c * l.b) / d, (a * l.c - c * l.a) / -d);
         assert(side(res) == 0);
@@ -149,21 +150,21 @@ struct Segment {
     }
 
     // Closest distance between segment and point.
-    double distance(const Point &p) const {
+    ld distance(const Point &p) const {
         // segment ends coincide
         if (a == b) return sqrt((a - p).lengthSqr());
         // drop a perpendicular on segement line
         Line l = Line(a, b).normalized();
         Point mid = p + l.normal() * (-l.substitute(p));
-        if (*this && mid) return sqrt((mid - p).lengthSqr());
+        if (between(a.x, b.x, mid.x) && between(a.y, b.y, mid.y)) return sqrt((mid - p).lengthSqr());
         // the foot of the perpendicular is not on the segment
         return sqrt(min((a - p).lengthSqr(), (b - p).lengthSqr()));
     }
 
     // Closest distance between segments.
     // Get min across all distances between segments and its ends combinations.
-    double distance(const Segment s) {
-        double ans = distance(s.a);
+    ld distance(const Segment s) {
+        ld ans = distance(s.a);
         ans = min(ans, distance(s.b));
         ans = min(ans, s.distance(a));
         ans = min(ans, s.distance(b));

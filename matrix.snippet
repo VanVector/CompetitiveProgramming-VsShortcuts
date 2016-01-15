@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>matrix</Title>
+      <Author>Van</Author>
+      <Description>Matrix Exp</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>matrix</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MAXP</ID>
+          <ToolTip>
+          </ToolTip>
+          <Default>MAXP</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>MAX_VALUE</ID>
+          <ToolTip>MAX_VALUE</ToolTip>
+          <Default>100</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>MxElementRecalc</ID>
+          <ToolTip>MxElementRecalc</ToolTip>
+          <Default>r[i][j] + a[i][k] * b[k][j]</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>RowElementRecalc</ID>
+          <ToolTip>RowElementRecalc						False</ToolTip>
+          <Default>r[j] + a[k] * b[k][j]</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Matrix
+const $type$ $MAXP$ = $MAX_VALUE$;
+typedef $type$ mx[$MAXP$][$MAXP$];
+typedef $type$ row[$MAXP$];
+
+void mul(mx a, mx b, mx r) {
+    memset(r, 0, sizeof(mx));
+    for (size_t i = 0; i < $MAXP$; i++) // check for 0-elements t optimize
+        for (size_t j = 0; j < $MAXP$; j++)
+            for (size_t k = 0; k < $MAXP$; k++)
+                r[i][j] = $MxElementRecalc$;
+}
+void mul(row a, mx b, row r) {
+    memset(r, 0, sizeof(row));
+    for (size_t j = 0; j < $MAXP$; j++)
+        for (size_t k = 0; k < $MAXP$; k++)
+            r[j] = $RowElementRecalc$;
+}
+void ones(mx a) {
+    memset(a, 0, sizeof(mx));
+    for (size_t i = 0; i < $MAXP$; i++)
+        a[i][i] = 1;
+}
+void binPow(mx a, int p, mx r) {
+    ones(r);
+    mx b;
+    memcpy(b, a, sizeof(mx));
+    mx t;
+    while (p) {
+        if (p & 1) {
+            mul(r, b, t);
+            memcpy(r, t, sizeof(mx));
+        }
+        mul(b, b, t);
+        memcpy(b, t, sizeof(mx));
+        p >>= 1;
+    }
+}
+#pragma endregion Matrix
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

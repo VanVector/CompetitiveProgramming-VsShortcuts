@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>lms</Title>
+      <Author>Van</Author>
+      <Description>Largest Monotonic Subsequence</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lms</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>elementType</ID>
+          <ToolTip>elementType</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region LMS
+// Increasing <, Decreasing >, Nondescreasing <=, Nonincreasing >=
+enum SequenceType { Increasing, Decreasing, Nondescreasing, Nonincreasing };
+vector<int> lms(vector<$elementType$> a, SequenceType type) {
+    vector<int> chain(a.size(), 0), prevIdxes(a.size(), -1);
+    int maxChain = 1;
+    for (int i = 1; i < a.size(); i++) {
+        int l = 0, r = maxChain - 1;
+        while (l <= r) {
+            int m = (l + r) / 2;
+            if (type == SequenceType::Increasing && a[chain[m]] < a[i] || 
+                type == SequenceType::Decreasing && a[chain[m]] > a[i] ||
+                type == SequenceType::Nondescreasing && a[chain[m]] <= a[i] ||
+                type == SequenceType::Nonincreasing && a[chain[m]] >= a[i])
+                l = m + 1;
+            else
+                r = m - 1;
+        }
+        prevIdxes[i] = l == 0 ? -1 : chain[l - 1];
+        if (l == maxChain) maxChain++;
+        chain[l] = i;
+    }
+    chain.resize(maxChain);
+    vector<int> lmsIdxes;
+    int tempIdx = chain[chain.size() - 1];
+    while (tempIdx != -1) {
+        lmsIdxes.push_back(tempIdx);
+        tempIdx = prevIdxes[tempIdx];
+    }
+    reverse(lmsIdxes.begin(), lmsIdxes.end());
+    return lmsIdxes;
+}
+#pragma endregion LMS
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>eratoSieve</Title>
+      <Author>Van</Author>
+      <Description>Erato Sieve</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>eratoSieve</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MaxPrime</ID>
+          <ToolTip>MaxPrime</ToolTip>
+          <Default>1e6</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Erato Sieve
+const int MAX_PRIME = $MaxPrime$;
+int divisors[MAX_PRIME] = { 0 }, primes[MAX_PRIME / 10] = { 0 }, nPrimes = 0;
+void generatePrimes() {
+    for (int i = 2; i < MAX_PRIME; i++) {
+        if (divisors[i] == 0) divisors[i] = primes[nPrimes++] = i;
+        for (int j = 0; j < nPrimes && i * primes[j] < MAX_PRIME; j++)
+            divisors[i * primes[j]] = min(divisors[i], primes[j]);
+    }
+}
+#pragma endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

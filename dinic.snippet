@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>dinic</Title>
+      <Author>Van</Author>
+      <Description>Dinic Max Flow</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>dinic</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>maxVertices</ID>
+          <ToolTip>maxVertices</ToolTip>
+          <Default>1e5 +10</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[#pragma region Dinic
+const int MAX_V = $maxVertices$;
+
+int source, target;
+
+struct Edge {
+    int f, t, cap, flow;
+    Edge() { }
+    Edge(int _f, int _t, int _cap, int _flow) : f(_f), t(_t), cap(_cap), flow(_flow) {}
+};
+
+vector<Edge> e;
+vector<int> g[MAX_V];
+
+// bfs
+int q[MAX_V];
+int d[MAX_V];
+
+//dfs
+// d[MAX_V] also used
+int ptr[MAX_V];
+
+void addEdge(int u, int v, int cap = 1) {
+    Edge e1 = Edge(u, v, cap, 0);
+    Edge e2 = Edge(v, u, 0, 0);
+    g[u].push_back((int)e.size());
+    e.push_back(e1);
+    g[v].push_back((int)e.size());
+    e.push_back(e2);
+}
+
+bool bfsDinic() {
+    int qh = 0, qt = 0;
+    q[qt++] = source;
+    memset(d, -1, sizeof(d));
+    d[source] = 0;
+    while (qh < qt && d[target] == -1) {
+        int u = q[qh++];
+        for (int i = 0; i < g[u].size(); i++) {
+            int iEdge = g[u][i];
+            int v = e[iEdge].t;
+            if (d[v] == -1 && e[iEdge].flow < e[iEdge].cap) {
+                q[qt++] = v;
+                d[v] = d[u] + 1;
+            }
+        }
+    }
+    return d[target] != -1;
+}
+
+int dfsDinic(int u, int flow) {
+    if (!flow) return 0;
+    if (u == target) return flow;
+    for (; ptr[u] < g[u].size(); ptr[u]++) {
+        int iEdge = g[u][ptr[u]];
+        int v = e[iEdge].t;
+        if (d[u] + 1 != d[v]) continue;
+        int pushed = dfsDinic(v, min(flow, e[iEdge].cap - e[iEdge].flow));
+        if (pushed) {
+            e[iEdge].flow += pushed;
+            e[iEdge ^ 1].flow -= pushed;
+            return pushed;
+        }
+    }
+    return 0;
+}
+
+int dinic() {
+    int flow = 0;
+    while (1) {
+        if (!bfsDinic()) break;
+        memset(ptr, 0, sizeof(ptr));
+        while (int pushed = dfsDinic(source, INF))
+            flow += pushed;
+    }
+    return flow;
+}
+#pragma endregion Dinic
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
