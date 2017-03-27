@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>permutation</Title>
+      <Author>Van</Author>
+      <Description>permutation</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>permutation</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MAXP</ID>
+          <ToolTip>MAXP</ToolTip>
+          <Default>10010</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[const int MAXP = $MAXP$;
+struct Permutation {
+	int p[MAXP];
+	int np;
+
+	vi c[MAXP];
+    int nc;
+
+	void calculateCycles() {
+		nc = 0;
+        for(int i = 0; i < MAXP; i++) c[i].clear();
+		bool u[MAXP] = { 0 };
+		for (int i = 0; i < np; i++) {
+			if (u[i]) continue;
+			int t = i;
+			do {
+				u[t] = 1;
+				c[nc].push_back(t);
+				t = p[t];
+			} while (t != i);
+			nc++;
+		}
+	}
+
+	Permutation(int _np) {
+		np = _np;
+		for (int i = 0; i < np; i++) p[i] = i;
+		calculateCycles();
+	}
+
+	Permutation(const Permutation &b) {
+		np = b.np;
+		memcpy(p, b.p, sizeof(b.p));
+		calculateCycles();
+	}
+
+	Permutation(int *_p, int _np) {
+		np = _np;
+		memcpy(p, _p, sizeof(p));
+		calculateCycles();
+	}
+
+	Permutation(const vi &a) {
+		np = a.size();
+		for (int i = 0; i < np; i++) p[i] = a[i];
+		calculateCycles();
+	}
+
+	Permutation(const vector<vi> &v) {
+		np = 0;
+		for (auto &vc : v) np += vc.size();
+		for (auto &vc : v) for (int i = 0; i < vc.size(); i++) p[vc[i]] = vc[(i + 1) % vc.size()];
+		calculateCycles();
+	}
+
+	bool operator == (Permutation b) {
+		assert(np == b.np);
+		for (int i = 0; i < np; i++) if (p[i] != b.p[i]) return false;
+		return true;
+	}
+
+	void operator = (Permutation b) {
+		np = b.np;
+		memcpy(p, b.p, sizeof(b.p));
+		calculateCycles();
+	}
+
+	void apply(Permutation b) {
+		assert(np == b.np);
+		int tmp[MAXP];
+		for (int i = 0; i < np; i++) tmp[b.p[i]] = p[i];
+		memcpy(p, tmp, sizeof(tmp));
+		calculateCycles();
+	}
+
+	void out() {
+		for (int i = 0; i < np; i++)
+			printf("%d ", p[i]);
+		printf("\n");
+	}
+}; $end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

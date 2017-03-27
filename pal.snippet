@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>pal</Title>
+      <Author>Van</Author>
+      <Description>Plaindrom function</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>pal</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[vector<vi> pal(string s) {
+	int n = s.size();
+	vi z = vi(n, 0), z2 = vi(n - 1, 0);
+	int m = 0, r = 0;
+	for (int i = 0; i < n; i++) {
+		if (i < r) z[i] = min(r - i + 1, z[2 * m - i]);
+		for (; i + z[i] < n && i - z[i] >= 0 && s[i + z[i]] == s[i - z[i]]; z[i]++);
+		int tr = i + z[i] - 1;
+		if (tr > r) m = i, r = tr;
+	}
+	m = 0, r = 0;
+	for (int i = 0; i < n - 1; i++) {
+		if (i < r) z2[i] = min(r - i, z2[2 * m - i]);
+		for (; i + z2[i] + 1 < n && i - z2[i] >= 0 && s[i + z2[i] + 1] == s[i - z2[i]]; z2[i]++);
+		int tr = i + z2[i];
+		if (tr > r) m = i, r = tr;
+	}
+	vector<vi> res;
+	res.push_back(z);
+	res.push_back(z2);
+	return res;
+}
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

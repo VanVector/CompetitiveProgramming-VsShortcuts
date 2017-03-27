@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>segmentTree</Title>
+      <Author>Van</Author>
+      <Description>segmentTree</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>segmentTree</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>TRes</ID>
+          <ToolTip>TRes</ToolTip>
+          <Default>lli</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>TElement</ID>
+          <ToolTip>TElement</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[struct SegmentTree {
+private:
+	$TElement$ *a;
+	int na;
+	$TRes$ t[4 * MAX];
+	//int toSet[4 * MAX];
+
+	void push(int v, int tl, int tr) {
+		//if (toSet[v] == -1) return;
+		//toSet[2 * v] = toSet[2 * v + 1] = toSet[v];
+		int tm = (tl + tr) / 2;
+
+		// TODO range update
+		//t[2 * v] = 1ll * toSet[v] * (tm - tl + 1);
+		//t[2 * v + 1] = 1ll * toSet[v] * (tr - tm);
+		//toSet[v] = -1;
+	}
+
+	void build(int v, int tl, int tr) {
+		if (tl == tr) {
+			t[v] = a[tl];
+			//toSet[v] = -1;
+			return;
+		}
+		int tm = (tl + tr) / 2;
+		build(2 * v, tl, tm);
+		build(2 * v + 1, tm + 1, tr);
+
+        //TODO combine
+		//t[v] = t[2 * v] + t[2 * v + 1];
+		//toSet[v] = -1;
+	}
+
+	$TRes$ query(int v, int tl, int tr, int l, int r) {
+		if (l > r) return 0;
+		if (tl == l && tr == r)
+			return t[v];
+		push(v, tl, tr);
+		int tm = (tl + tr) / 2;
+		$TRes$ lRes = query(2 * v, tl, tm, l, min(r, tm));
+		$TRes$ rRes = query(2 * v + 1, tm + 1, tr, max(l, tm + 1), r);
+
+        // TODO combine
+		// lli res = lRes + rRes;
+		// return res;
+	}
+
+	void update(int v, int tl, int tr, int l, int r, $TElement$ val) {
+		if (l > r) return;
+		if (tl == l && tr == r) {
+			// TODO range update
+			t[v] = 1ll * (tr - tl + 1) * val;
+			toSet[v] = val;
+			return;
+		}
+		push(v, tl, tr);
+		int tm = (tl + tr) / 2;
+		update(2 * v, tl, tm, l, min(r, tm), val);
+		update(2 * v + 1, tm + 1, tr, max(l, tm + 1), r, val);
+
+		// TODO combine
+		//t[v] = t[2 * v] + t[2 * v + 1];
+	}
+
+public:
+	SegmentTree(int _na) {
+		na = _na;
+		memset(a, 0, sizeof(a));
+	}
+
+	SegmentTree($TElement$ *_a, int _na) {
+		a = _a, na = _na;
+		build(1, 0, na - 1);
+	}
+
+	$TRes$ query(int l, int r) { return query(1, 0, na - 1, l, r); }
+	$TRes$ query(int pos) { return query(1, 0, na - 1, pos, pos); }
+	void update(int l, int r, $TElement$ val) { update(1, 0, na - 1, l, r, val); }
+	void update(int pos, $TElement$ val) { update(1, 0, na - 1, pos, pos, val); }
+};
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

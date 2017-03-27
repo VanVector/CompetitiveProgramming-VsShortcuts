@@ -5,32 +5,38 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>readai</Title>
-      <Author>Van</Author>
-      <Description>Reading by scanf</Description>
+      <Title>fr1</Title>
+      <Author>Microsoft Corporation</Author>
+      <Description>Code snippet for 'for' loop from 1</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>readai</Shortcut>
+      <Shortcut>fr</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
         <Literal Editable="true">
-          <ID>value</ID>
-          <ToolTip>Value to read</ToolTip>
-          <Default>a</Default>
+          <ID>type</ID>
+          <ToolTip>Control variable type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>index</ID>
+          <ToolTip>Index</ToolTip>
+          <Default>i</Default>
           <Function>
           </Function>
         </Literal>
         <Literal Editable="true">
           <ID>max</ID>
-          <ToolTip>Number of elements to read</ToolTip>
+          <ToolTip>Max length</ToolTip>
           <Default>n</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[for(int i = 0; i < $max$; i++) scanf("%d", &$value$[i]);
-$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[for ($type$ $index$ = 1; $index$ <= $max$; $index$++) $end$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

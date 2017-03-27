@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>zfunction</Title>
+      <Author>Van</Author>
+      <Description>zfunction</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>zfunction</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[vector<int> zFunction (string s) {
+	int n = (int) s.length();
+	vector<int> z (n);
+	for (int i = 1, l = 0, r = 0; i < n; i++) {
+		if (i <= r) z[i] = min (r - i + 1, z[i - l]);
+		while (i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
+		if (i + z[i] - 1 > r) l = i,  r = i + z[i] - 1;
+	}
+	return z;
+}
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -51,6 +51,27 @@ int inv(const int a, const int mod = $MOD_NAME$) {   // assuming that $MOD_NAME$
     return res;
 }
 inline int dvd(const int a, const int b, const int mod = $MOD_NAME$) { return mul(a, inv(b, mod), mod); } // b != 0
+inline int convert(int x, const int mod = $MOD_NAME$) { 
+	int tx = x % mod + mod;
+	return tx > mod ? tx - mod : tx;
+};
+struct mNum {
+	int x;
+	mNum(int _x) : x(convert(_x)) {}
+	mNum(lli _x) : x(convert(_x)) {}
+};
+mNum operator +(mNum a, mNum b) { return mNum(add(a.x, b.x)); }
+mNum operator -(mNum a, mNum b) { return mNum(sub(a.x, b.x)); }
+mNum operator *(mNum a, mNum b) { return mNum(mul(a.x, b.x)); }
+mNum operator /(mNum a, mNum b) { return mNum(dvd(a.x, b.x)); }
+mNum operator +(lli x, mNum b) { return mNum(add(convert(x), b.x)); }
+mNum operator -(lli x, mNum b) { return mNum(sub(convert(x), b.x)); }
+mNum operator *(lli x, mNum b) { return mNum(mul(convert(x), b.x)); }
+mNum operator /(lli x, mNum b) { return mNum(dvd(convert(x), b.x)); }
+mNum operator +(mNum a, lli x) { return mNum(add(a.x, convert(x))); }
+mNum operator -(mNum a, lli x) { return mNum(sub(a.x, convert(x))); }
+mNum operator *(mNum a, lli x) { return mNum(mul(a.x, convert(x))); }
+mNum operator /(mNum a, lli x) { return mNum(dvd(a.x, convert(x))); }
 #pragma endregion
 $end$]]></Code>
     </Snippet>

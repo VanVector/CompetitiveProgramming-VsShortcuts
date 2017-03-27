@@ -5,32 +5,31 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>readai</Title>
+      <Title>consti</Title>
       <Author>Van</Author>
-      <Description>Reading by scanf</Description>
+      <Description>Const int declaration</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>readai</Shortcut>
+      <Shortcut>consti</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
         <Literal Editable="true">
-          <ID>value</ID>
-          <ToolTip>Value to read</ToolTip>
-          <Default>a</Default>
+          <ID>name</ID>
+          <ToolTip>name</ToolTip>
+          <Default>MAX</Default>
           <Function>
           </Function>
         </Literal>
         <Literal Editable="true">
-          <ID>max</ID>
-          <ToolTip>Number of elements to read</ToolTip>
-          <Default>n</Default>
+          <ID>value</ID>
+          <ToolTip>value</ToolTip>
+          <Default>1e5 +10</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[for(int i = 0; i < $max$; i++) scanf("%d", &$value$[i]);
-$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[const int $name$ = $value$;$end$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

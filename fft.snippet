@@ -23,14 +23,15 @@
         </Literal>
       </Declarations>
       <Code Language="cpp" Delimiter="$"><![CDATA[#pragma region FFT
+typedef long double ld;
 const double PI = acos(-1.);
 
 struct complex {
 public:
     long double re, im;
     complex() { re = 0; im = 0; }
-    complex(long double _x, long double _y) { re = _x; im = _y; }
-    complex(long double _x) { re = _x; im = 0; };
+    complex(ld _x, ld _y) { re = _x; im = _y; }
+    complex(ld _x) { re = _x; im = 0; };
     complex operator +(const complex &c);
     void operator *= (const complex &c);
     void operator /= (const complex &c);
@@ -46,9 +47,11 @@ complex complex::operator /(const complex &c) { return complex((re * c.re + im *
 void complex::operator *=(const complex &c) { *this = *this * c; }
 void complex::operator /=(const complex &c) { *this = *this / c; }
 
-complex w[1 << $MAXPOW$];
+const int FFTPOW = $MAXPOW$;
+const int FFTSIZE = 1 << FFTPOW;
+ld wCos[FFTSIZE], wSin[FFTSIZE];
 
-int rev(const int &i, const int &logN) {
+int rev(int &i, int &logN) {
     int res = 0;
     for (int b = 0; b < logN; b++)
         if (i & (1 << b))
@@ -56,13 +59,17 @@ int rev(const int &i, const int &logN) {
     return res;
 }
 
-int getLog(const int &n) {
+int getLog(int &n) {
     int p = 0;
     while ((1 << p) < n) p++;
     return p;
 }
 
-void fft(complex a[], const int &n, const bool &invert = false) {
+complex getW(int i, int l, bool invert) {
+	return complex(wCos[i * (FFTSIZE / l)], (invert ? -1 : +1) * wSin[i * (FFTSIZE / l)]);
+}
+
+void fft(complex a[], int n, bool invert = false) {
     int logN = getLog(n);
     for (int i = 0; i < n; i++) {
         int revi = rev(i, logN);
@@ -72,14 +79,9 @@ void fft(complex a[], const int &n, const bool &invert = false) {
 
     for (int l = 2; l <= n; l <<= 1) {
         int ld2 = l >> 1;
-        for (int i = 0; i < ld2; i++) {
-            double ang = 2 * PI * i / l * (invert ? -1 : +1);
-            w[i] = complex(cos(ang), sin(ang));
-        }
-
         for (int i = 0; i < n; i += l) {
             for (int j = 0; j < ld2; j++) {
-                complex u = a[j + i], v = w[j] * a[j + i + ld2];
+                complex u = a[j + i], v = getW(j, l, invert) * a[j + i + ld2];
                 a[j + i] = u + v;
                 a[j + i + ld2] = u - v;
                 if (invert) a[j + i] /= 2, a[j + i + ld2] /= 2;
@@ -88,7 +90,7 @@ void fft(complex a[], const int &n, const bool &invert = false) {
     }
 }
 
-inline void ifft(complex a[], const int &n) { fft(a, n, true); }
+inline void ifft(complex a[], int n) { fft(a, n, true); }
 #pragma endregion
 $end$]]></Code>
     </Snippet>

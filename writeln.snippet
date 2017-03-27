@@ -15,21 +15,21 @@
     <Snippet>
       <Declarations>
         <Literal Editable="true">
-          <ID>char</ID>
-          <ToolTip>Read specificator</ToolTip>
-          <Default>d</Default>
+          <ID>string</ID>
+          <ToolTip>string</ToolTip>
+          <Default> </Default>
           <Function>
           </Function>
         </Literal>
         <Literal Editable="true">
-          <ID>value</ID>
-          <ToolTip>Value to read</ToolTip>
-          <Default>val</Default>
+          <ID>args</ID>
+          <ToolTip>args</ToolTip>
+          <Default> ,args</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[printf("%$char$\n", $value$);$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[printf("$string$\n"$args$);$end$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

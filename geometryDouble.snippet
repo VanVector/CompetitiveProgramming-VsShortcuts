@@ -18,7 +18,7 @@
       <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[
 #pragma region geometry_double
 // see http://e-maxx.ru/bookz/files/andreeva.pdf for geometry
-typedeg long double ld;
+typedef long double ld;
 
 const ld PI = acos(-1.0);
 const ld eps = 1e-9;
@@ -72,6 +72,11 @@ bool unidirected(const Point p1, const Point p2) {
 // Check if two vectors are orthogonal
 bool orthogonal(const Point p1, const Point p2) {
     return fabs(p1 * p2) <= eps;
+}
+
+Point rotate(Point p, ld ang) {
+	ld ca = cos(ang), sa = sin(ang);
+	return Point(ca * p.x - sa * p.y, sa * p.x + ca * p.y);
 }
 
 struct Line {
@@ -132,7 +137,7 @@ struct Segment {
     vector<Point> operator& (const Segment &s) const {
         Point b1 = b, a1 = a;
         Point b2 = s.b, a2 = s.a;
-        if (fabs((b1 - a1) * (b2 - a2)) < eps) {
+        if (fabs((b1 - a1) >> (b2 - a2)) < eps) {
             if (b1 < a1) swap(a1, b1);
             if (b2 < a2) swap(a2, b2);
             if (a2 < a1) swap(a1, a2), swap(b1, b2);

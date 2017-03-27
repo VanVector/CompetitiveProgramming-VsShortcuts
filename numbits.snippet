@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>numbits</Title>
+      <Author>Van</Author>
+      <Description>numbits</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>numbits</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[unsigned int numbits(unsigned int i)
+{
+	const unsigned int MASK1 = 0x55555555;
+	const unsigned int MASK2 = 0x33333333;
+	const unsigned int MASK4 = 0x0f0f0f0f;
+	const unsigned int MASK8 = 0x00ff00ff;
+	const unsigned int MASK16 = 0x0000ffff;
+	i = (i&MASK1) + (i >> 1 & MASK1);
+	i = (i&MASK2) + (i >> 2 & MASK2);
+	i = (i&MASK4) + (i >> 4 & MASK4);
+	i = (i&MASK8) + (i >> 8 & MASK8);
+	i = (i&MASK16) + (i >> 16 & MASK16);
+	return i;
+}
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

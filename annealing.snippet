@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>annealing</Title>
+      <Author>Van</Author>
+      <Description>Simulated Annealing</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>annealing</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[template<typename TEnergy, typename TState>
+struct Annealing {
+private:
+	function<TEnergy(TState)> _calculateEnergy;
+	function<TState(TState)> _generateState;
+	int _maxIterations = 50000;
+	double _fromT = 20;
+	double _toT = 0.0001;
+
+	double DecreaseTemperature(double initialT, int i)
+	{
+		//return initialT * 0.1 / i;
+		return initialT / log(i);
+	}
+
+	double GetTransitionProbability(TEnergy dE, double T)
+	{
+		double prop = 1.0 / (1 + exp(dE / T));
+		//double prop = 1.0 / exp(dE / T);
+		return prop;
+	}
+
+	bool MakeTransit(double P)
+	{
+		return ((double)rand() / (RAND_MAX)) <= P;
+	}
+
+public:
+	Annealing(int maxIterations, double fromT, double toT, function<TEnergy(TState)> calculateEnergy, function<TState(TState)> generateState) {
+		_maxIterations = maxIterations;
+		_fromT = fromT;
+		_toT = toT;
+		_calculateEnergy = calculateEnergy;
+		_generateState = generateState;
+	}
+
+	Annealing(function<TEnergy(TState)> calculateEnergy, function<TState(TState)> generateState) {
+		_calculateEnergy = calculateEnergy;
+		_generateState = generateState;
+	}
+
+	TEnergy getOptimum(TState state) {
+		double T = _fromT;
+		TEnergy currentEnergy = _calculateEnergy(state);
+		for (int i = 2; i <= _maxIterations; i++)
+		{
+			TState candidateState = _generateState(state);
+			TEnergy candidateEnergy = _calculateEnergy(candidateState);
+			if (candidateEnergy < currentEnergy) {
+				currentEnergy = candidateEnergy;
+				state = candidateState;
+			}
+			else
+			{
+				double P = GetTransitionProbability(candidateEnergy - currentEnergy, T);
+				if (MakeTransit(P))
+				{
+					currentEnergy = candidateEnergy;
+					state = candidateState;
+				}
+			}
+			T = DecreaseTemperature(_fromT, i);
+			if (T <= _toT) break;
+		}
+		return currentEnergy;
+	}
+};
+
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

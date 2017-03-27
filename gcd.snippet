@@ -26,6 +26,12 @@
     return b == 0 ? a : gcd(b, a % b);
 }
 
+$type$ gcd($type$ a, $type$ b, $type$ &x, $type$ &y) {
+	if (!b) return x = 1, y = 0, a; 
+	$type$ px, py, res = gcd(b, a % b, px, py);
+	return x = py, y = px - a / b * py, res;
+}
+
 $end$]]></Code>
     </Snippet>
   </CodeSnippet>

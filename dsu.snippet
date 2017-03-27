@@ -15,11 +15,11 @@
     <Snippet>
       <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region DSU
 int parent[MAX] = { 0 };
-int rank[MAX] = { 0 };
+int rnk[MAX] = { 0 };
 
 void makeSet(int v) {
     parent[v] = v;
-    rank[v] = 0;
+    rnk[v] = 0;
 }
 
 int findSet(int v) {
@@ -32,11 +32,11 @@ void unionSets(int a, int b) {
     a = findSet(a);
     b = findSet(b);
     if (a != b) {
-        if (rank[a] < rank[b])
+        if (rnk[a] < rnk[b])
             swap(a, b);
         parent[b] = a;
-        if (rank[a] == rank[b])
-            ++rank[a];
+        if (rnk[a] == rnk[b])
+            ++rnk[a];
     }
 }
 #pragma endregion DSU

@@ -42,8 +42,8 @@ double ternarySearch(Opt opt, double l, double r, const function<double(double)>
     }
     return $ret$;
 }
-double ternarySearchMin(double l, double r, const function<double(double)> f) { return ternSearch(Opt::Min, l, r, f); }
-double ternarySearchMax(double l, double r, const function<double(double)> f) { return ternSearch(Opt::Max, l, r, f); }
+double ternarySearchMin(double l, double r, const function<double(double)> f) { return ternarySearch(Opt::Min, l, r, f); }
+double ternarySearchMax(double l, double r, const function<double(double)> f) { return ternarySearch(Opt::Max, l, r, f); }
 #pragma endregion
 
 $end$]]></Code>
