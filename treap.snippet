@@ -1,91 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
-  <CodeSnippet Format="1.0.0">
-    <Header>
-      <SnippetTypes>
-        <SnippetType>Expansion</SnippetType>
-      </SnippetTypes>
-      <Title>treap</Title>
-      <Author>Van</Author>
-      <Description>treap</Description>
-      <HelpUrl>
-      </HelpUrl>
-      <Shortcut>treap</Shortcut>
-    </Header>
-    <Snippet>
-      <Declarations>
-        <Literal Editable="true">
-          <ID>TValue</ID>
-          <ToolTip>TValue</ToolTip>
-          <Default>int</Default>
-          <Function>
-          </Function>
-        </Literal>
-        <Literal Editable="true">
-          <ID>MAXSTACKSIZE</ID>
-          <ToolTip>MAXSTACKSIZE</ToolTip>
-          <Default>1e5 + 100</Default>
-          <Function>
-          </Function>
-        </Literal>
-      </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[#pragma region Treap
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+			<Title>treap</Title>
+			<Author>Van</Author>
+			<Description>treap</Description>
+			<HelpUrl>
+			</HelpUrl>
+			<Shortcut>treap</Shortcut>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal Editable="true">
+					<ID>TValue</ID>
+					<ToolTip>TValue</ToolTip>
+					<Default>int</Default>
+					<Function>
+					</Function>
+				</Literal>
+				<Literal Editable="true">
+					<ID>TRange</ID>
+					<ToolTip>TRange</ToolTip>
+					<Default>lli</Default>
+					<Function>
+					</Function>
+				</Literal>
+				<Literal Editable="true">
+					<ID>MAXSTACKSIZE</ID>
+					<ToolTip>MAXSTACKSIZE</ToolTip>
+					<Default>1e5 + 100</Default>
+					<Function>
+					</Function>
+				</Literal>
+			</Declarations>
+			<Code Language="cpp" Delimiter="$"><![CDATA[#pragma region Treap
+
+#pragma region Treap
+// TValue should have 
+// TRange operator+ (const TRange &r);
+// bool operator< (const TValue &v);
 typedef $TValue$ TValue;
+typedef $TRange$ TRange;
 
 struct TreapNode {
 	TreapNode *l, *r, *p;
 	int y;
-    int rangeSize;
+	size_t size;
 	TValue value;
-	TValue rangeValue;
+	TRange rangeValue;
 	TreapNode() { }
 
-	static int getRangeSize(TreapNode *t) { return t == NULL ? 0 : t->rangeSize; }
-	static TValue getRangeValue(TreapNode *t) { return t == NULL ? 0 : t->rangeValue; }
+	static size_t getSize(TreapNode *t) { return t == NULL ? 0 : t->size; }
+	static TRange getRangeValue(TreapNode *t) { return t == NULL ? 0 : t->rangeValue; }
 	static void update(TreapNode *t) {
-		t->rangeSize = getRangeSize(t->l) + getRangeSize(t->r) + 1;
-		t->rangeValue = getRangeValue(t->l) + getRangeValue(t->r) + t->value;
+		if (t == NULL) return;
+		t->size = getSize(t->l) + getSize(t->r) + 1;
+		t->rangeValue = t->value + getRangeValue(t->l) + getRangeValue(t->r);
 	}
 
-	TreapNode(TValue _value) : y((1 << 16) * rand() + rand()), value(_value) { 
-        l = r = p = NULL; 
-        update(this);
-    }
-
-	struct iterator {
-		TreapNode* curr;
-		iterator(TreapNode* _curr) : curr(_curr) {}
-		iterator& operator++() {
-			assert(curr != NULL);
-			TreapNode *t = curr->r;
-			if (t != NULL) while (t->l != NULL) t = t->l;
-			else {
-				for (t = curr;  t->p != NULL && t->p->r == t; t = t->p);
-				t = t->p;
-			}
-			curr = t;
-			return *this;
-		}
-		bool operator != (const TreapNode::iterator &other) { return curr != other.curr; }
-		bool operator == (const TreapNode::iterator &other) { return curr == other.curr; }
-		TreapNode* operator *() { return curr; }
-	};
-};
-
-const int MAXSTACKSIZE = $MAXSTACKSIZE$;
-struct TreapNodeStack {
-	TreapNode stack[MAXSTACKSIZE];
-	int size;
-	TreapNodeStack() { size = 0; }
-	TreapNode *getNext() { return &stack[size++]; }
-};
-
-struct Treap {
-
-	TreapNodeStack* s;
-	TreapNode* root;
-	Treap(TreapNodeStack* _s) : s(_s), root(NULL) {}
-	Treap(TreapNodeStack* _s, TreapNode* _root) : s(_s), root(_root) {}
+	TreapNode(TValue _value) : y((1 << 16) * rand() + rand()), value(_value) {
+		l = r = p = NULL;
+		update(this);
+	}
 
 	static TreapNode *merge(TreapNode *t1, TreapNode *t2) {
 		if (t1 == NULL) return t2;
@@ -105,39 +84,122 @@ struct Treap {
 		return t;
 	}
 
-	static void splitByValue(TreapNode *t, TValue value, TreapNode* &L, TreapNode* &R) {
+#pragma region Split
+	static void splitByValue_l_ge(TreapNode *t, TValue value, TreapNode* &L, TreapNode* &R) {
 		if (t == NULL) return void(L = R = NULL);
 		if (t->value < value) { // greaterOrEqual values go right
-			splitByValue(t->r, value, t->r, R);
+			splitByValue_l_ge(t->r, value, t->r, R);
 			if (t->r != NULL) t->r->p = t;
-            if (R != NULL) R->p = NULL;
+			if (R != NULL) R->p = NULL;
 			L = t;
-		}
-		else { // lower values go left
-			splitByValue(t->l, value, L, t->l);
+		} else { // lower values go left
+			splitByValue_l_ge(t->l, value, L, t->l);
 			if (t->l != NULL) t->l->p = t;
-            if (L != NULL) L->p = NULL;
+			if (L != NULL) L->p = NULL;
 			R = t;
+		}
+		TreapNode::update(t);
+	}
+
+	static void splitByValue_le_g(TreapNode *t, TValue value, TreapNode* &L, TreapNode* &R) {
+		if (t == NULL) return void(L = R = NULL);
+		if (value < t->value) { // lowerOrEqual values go left
+			splitByValue_le_g(t->l, value, L, t->l);
+			if (t->l != NULL) t->l->p = t;
+			if (L != NULL) L->p = NULL;
+			R = t;
+		} else { // greater values go right
+			splitByValue_le_g(t->r, value, t->r, R);
+			if (t->r != NULL) t->r->p = t;
+			if (R != NULL) R->p = NULL;
+			L = t;
 		}
 		TreapNode::update(t);
 	}
 
 	static void splitByIndex(TreapNode *t, int idx, TreapNode* &L, TreapNode* &R) {
 		if (t == NULL) return void(L = R = NULL);
-		int currentIndex = TreapNode::getRangeSize(t->l);
-		if (idx <= currentIndex) { 
+		int currentIndex = TreapNode::getSize(t->l);
+		if (idx <= currentIndex) {
 			splitByIndex(t->l, idx, L, t->l);
 			if (t->l != NULL) t->l->p = t;
-            if (L != NULL) L->p = NULL;
+			if (L != NULL) L->p = NULL;
 			R = t;
 		}
 		else {
 			splitByIndex(t->r, idx - currentIndex - 1, t->r, R);
 			if (t->r != NULL) t->r->p = t;
-            if (R != NULL) R->p = NULL;
+			if (R != NULL) R->p = NULL;
 			L = t;
 		}
 		TreapNode::update(t);
+	}
+#pragma endregion
+
+	struct iterator {
+		TreapNode* curr;
+		iterator(TreapNode* _curr) : curr(_curr) {}
+		iterator& operator++() {
+			assert(curr != NULL);
+			TreapNode *t = curr->r;
+			if (t != NULL) while (t->l != NULL) t = t->l;
+			else {
+				for (t = curr; t->p != NULL && t->p->r == t; t = t->p);
+				t = t->p;
+			}
+			curr = t;
+			return *this;
+		}
+		bool operator != (const TreapNode::iterator &other) { return curr != other.curr; }
+		bool operator == (const TreapNode::iterator &other) { return curr == other.curr; }
+		TreapNode* operator *() { return curr; }
+	};
+};
+
+struct TreapNodeStackBase {
+	virtual TreapNode *getNext() = 0;
+};
+
+const int MAXSTACKSIZE = $MAXSTACKSIZE$;
+struct TreapNodeStack : TreapNodeStackBase {
+	TreapNode stack[MAXSTACKSIZE];
+	int size;
+	TreapNodeStack() { size = 0; }
+	TreapNode *getNext() override { return &stack[size++]; }
+} stack;
+
+struct TreapNodeStackDynamic : TreapNodeStackBase {
+	TreapNode *getNext() override { return new TreapNode(); }
+};
+
+struct Treap {
+	TreapNodeStackBase* s;
+	TreapNode* root;
+	Treap() { s = new TreapNodeStackDynamic(); }
+	Treap(TreapNode* _root): root(_root) { s = new TreapNodeStackDynamic(); }
+	Treap(TreapNodeStackBase* _s) : s(_s), root(NULL) {}
+	Treap(TreapNodeStackBase* _s, TreapNode* _root) : s(_s), root(_root) {}
+
+	size_t size() { return TreapNode::getSize(root); }
+	TRange range() { return TreapNode::getRangeValue(root); }
+	void clear() { root = NULL; }
+
+	size_t count(TValue value) {
+		TreapNode *l, *r, *tmp;
+		TreapNode::splitByValue_l_ge(root, value, l, r);
+		TreapNode::splitByValue_le_g(r, value, tmp, r);
+		size_t res = TreapNode::getSize(tmp);
+		l = TreapNode::merge(l, tmp);
+		root = TreapNode::merge(l, r);
+	}
+
+	void insert(TValue value) {
+		TreapNode *t = s->getNext();
+		(*t) = TreapNode(value);
+		TreapNode *l, *r;
+		TreapNode::splitByValue_l_ge(root, value, l, r);
+		l = TreapNode::merge(l, t);
+		root = TreapNode::merge(l, r);
 	}
 
 	TreapNode::iterator begin() {
@@ -146,78 +208,103 @@ struct Treap {
 		return TreapNode::iterator(t);
 	}
 	TreapNode::iterator end() { return TreapNode::iterator(NULL); }
-	TreapNode::iterator lower_bound(TValue value) {
-		TreapNode *l, *r, *t;
-		splitByValue(root, value, l, r);
-		for (t = r; t != NULL && t->l != NULL; t = t->l);
-		TreapNode::iterator res = TreapNode::iterator(t);
-		root = merge(l, r);
-		return res;
-	}
-	TreapNode::iterator upper_bound(TValue value) {
-		return lower_bound(value + 1);
-	}
-
-	TreapNode::iterator find(TreapNode* t, TValue value) {
-		if (t == NULL) return this->end();
-		if (t->value == value) return TreapNode::iterator(t);
-		return t->value < value ? find(t->r, value) : find(t->l, value);
-	}
-	TreapNode::iterator find(TValue value) { return find(root, value); }
 
 	TreapNode* operator[](int i) {
-		assert(i < TreapNode::getRangeSize(root) && i >= 0);
+		assert(i < TreapNode::getSize(root) && i >= 0);
 		TreapNode *l, *r, *t;
-		splitByIndex(root, i, l, r);
+		TreapNode::splitByIndex(root, i, l, r);
 		for (t = r; t != NULL && t->l != NULL; t = t->l);
-		merge(l, r);
+		TreapNode::merge(l, r);
 		return t;
 	}
 
+	// erases ALL nodes with value
 	void erase(TValue value) {
-		if (find(value) == end()) return;
 		TreapNode *l, *r, *tmp;
-		splitByValue(root, value, l, r);
-		splitByIndex(r, 1, tmp, r);
-		root = merge(l, r);
+		TreapNode::splitByValue_l_ge(root, value, l, r);
+		TreapNode::splitByValue_le_g(r, value, tmp, r);
+		root = TreapNode::merge(l, r);
 	}
 
-	void clear() {
-		root = NULL;
-	}
-
-	size_t size() {
-		return TreapNode::getRangeSize(root);
-	}
-
-	void insert(TValue value) {
-		TreapNode *t = s->getNext();
-		(*t) = TreapNode(value);
+#pragma region Range Queries
+	TRange getRangeIdx(int idx, bool takeRight) {
 		TreapNode *l, *r;
-		splitByValue(root, value, l, r);
-		l = merge(l, t);
-		root = merge(l, r);
+		TreapNode::splitByIndex(root, idx, l, r);
+		TRange res = TreapNode::getRangeValue(takeRight ? r : l);
+		root = TreapNode::merge(l, r);
+		return res;
+	}
+	TRange getRangeBetweenIdx(int li, int ri) {
+		TreapNode *l, *r, *tmp;
+		TreapNode::splitByIndex(root, ri + 1, l, r);
+		TreapNode::splitByIndex(l, li, l, tmp);
+		TRange res = TreapNode::getRangeValue(tmp);
+		l = TreapNode::merge(l, tmp);
+		root = TreapNode::merge(l, r);
+		return res;
 	}
 
-#pragma region out
-	void out() {
-		out(root);
+	TRange getRangeValueGen(TValue value, bool takeRight, function<void(TreapNode*, TValue, TreapNode*&, TreapNode*&)> split) {
+		TreapNode *l, *r;
+		split(root, value, l, r);
+		TRange res = TreapNode::getRangeValue(takeRight ? r : l);
+		root = TreapNode::merge(l, r);
+		return res;
 	}
-	void out(TreapNode *t, int lvl = 1) {
-#ifndef _LOCAL_DEBUG_
-		return;
-#endif
-		if (lvl == 1) eprintf("-------------------\n");
-		if (t == NULL) return;
-		out(t->l, lvl + 1);
-		eprintf("%*c%d\n", lvl, ' ', t->value);
-		out(t->r, lvl + 1);
+	TRange getRangeValue_g(TValue value) { return getRangeValueGen(value, 1, TreapNode::splitByValue_le_g); }
+	TRange getRangeValue_ge(TValue value) { return getRangeValueGen(value, 1, TreapNode::splitByValue_l_ge); }
+	TRange getRangeValue_l(TValue value) { return getRangeValueGen(value, 0, TreapNode::splitByValue_l_ge); }
+	TRange getRangeValue_le(TValue value) { return getRangeValueGen(value, 0, TreapNode::splitByValue_le_g); }
+	TRange getRangeBetweenValues(TValue lv, TValue rv) {
+		TreapNode *l, *r, *tmp;
+		TreapNode::splitByValue_le_g(root, rv, l, r);
+		TreapNode::splitByValue_l_ge(l, lv, l, tmp);
+		TRange res = TreapNode::getRangeValue(tmp);
+		l = TreapNode::merge(l, tmp);
+		root = TreapNode::merge(l, r);
+		return res;
 	}
 #pragma endregion
+
+#pragma region Split/Merge
+	tuple<Treap, Treap> splitByValue_le_g(TValue value) {
+		TreapNode *l, *r;
+		TreapNode::splitByValue_le_g(root, value, l, r);
+		return make_tuple(Treap(s, l), Treap(s, r));
+	}
+
+	tuple<Treap, Treap> splitByValue_l_ge(TValue value) {
+		TreapNode *l, *r;
+		TreapNode::splitByValue_l_ge(root, value, l, r);
+		return make_tuple(Treap(s, l), Treap(s, r));
+	}
+
+	// Merges two treaps in O(minSz * log(maxSz)), greater treap is destroyed.
+	Treap Merge(Treap t2) {
+		Treap *greater, *lower;
+		greater = size() > t2.size() ? this : &t2;
+		lower = size() > t2.size() ? &t2 : this;
+		for (auto tn : *lower) greater->insert(tn->value);
+		return *greater;
+	}
+#pragma endregion
+
+	void out() {
+#ifdef _LOCAL_VAN
+		out(root);
+#endif
+	}
+	void out(TreapNode *t, int lvl = 1) {
+		if (lvl == 1) printf("-------------------\n");
+		if (t == NULL) return;
+		out(t->l, lvl + 1);
+		printf("%*c%d\n", lvl, ' ', t->value);
+		out(t->r, lvl + 1);
+	}
 };
 #pragma endregion
 
 $end$]]></Code>
-    </Snippet>
-  </CodeSnippet>
+		</Snippet>
+	</CodeSnippet>
 </CodeSnippets>
