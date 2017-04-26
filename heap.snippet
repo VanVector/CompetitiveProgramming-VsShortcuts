@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>heap</Title>
+      <Author>Van</Author>
+      <Description>heap minimum distinct elements with limited value</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>heap</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MAXP</ID>
+          <ToolTip>MAXP</ToolTip>
+          <Default>10010</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[const int MAX = $MAXP$;
+struct Heap {
+	int hp[2 * MAX];
+	int hpSize = 0;
+	int hpPos[MAX];
+  
+  void clear() {
+    memset(hp, INF, sizeof(hp));
+    memset(hpPos, -1, sizeof(hpPos));
+    hpSize = 0;
+  }
+  Heap() { clear(); }
+  
+	void hSwap(int pos1, int pos2) {
+		swap(hp[pos1], hp[pos2]);
+		swap(hpPos[hp[pos1]], hpPos[hp[pos2]]);
+	}
+
+	void add(int id) {
+		hp[hpSize] = id;
+		hpPos[id] = hpSize;
+		int pos = hpSize;
+		while (pos && hp[pos >> 1] > hp[pos]) {
+			hSwap(pos, pos >> 1);
+			pos >>= 1;
+		}
+		hpSize++;
+	}
+
+	void remove(int id) {
+		int pos = hpPos[id];
+		hSwap(pos, hpSize - 1);
+		hpPos[id] = -1;
+		hpSize--;
+		hp[hpSize] = INF;
+		while (pos && hp[pos >> 1] > hp[pos]) {
+			hSwap(pos, pos >> 1);
+			pos >>= 1;
+		};
+		while (hp[pos * 2] < hp[pos] || hp[pos * 2 + 1] < hp[pos]) {
+			if (hp[pos * 2] <= hp[pos * 2 + 1]) {
+				hSwap(pos, pos * 2);
+				pos = pos * 2;
+			}
+			else {
+				hSwap(pos, pos * 2 + 1);
+				pos = pos * 2 + 1;
+			}
+		}
+	}
+
+	int min() { return hpSize ? hp[0] : -1; }
+}; $end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
