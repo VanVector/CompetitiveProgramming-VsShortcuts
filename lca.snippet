@@ -43,7 +43,7 @@ int getLca(int u, int v) {
     return up[u][0];
 }
 
-void dfs(int v, int p = -1) {
+void dfs(int v, int p = 0) {
     tin[v] = curTime++;
     for (int i = 0; i < MAX_POW; ++i)
         up[v][i] = i ? up[up[v][i - 1]][i - 1] : p;
