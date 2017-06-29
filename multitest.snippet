@@ -7,39 +7,261 @@
       </SnippetTypes>
       <Title>multitest</Title>
       <Author>Van</Author>
-      <Description>Reading by scanf in multitest</Description>
+      <Description>multitest program template</Description>
       <HelpUrl>
       </HelpUrl>
       <Shortcut>multitest</Shortcut>
     </Header>
     <Snippet>
       <Declarations>
-        <Literal Editable="true">
-          <ID>char</ID>
-          <ToolTip>Read specificator</ToolTip>
-          <Default>d</Default>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[
+#pragma region Include/Defines
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <limits.h>
+#include <vector>
+#include <stdlib.h>
+#include <algorithm>
+#include <memory.h>
+#include <string.h>
+#include <math.h>
+#include <string>
+#include <algorithm>
+#include <functional>
+#include <cassert>
+#include <map>
+#include <set>
+#include <iostream>
+#include <queue>
+#include <time.h>
+
+using namespace std;
+typedef long long lli;
+typedef vector<int> vi;
+typedef vector<lli> vli;
+typedef pair<int, int> pii;
+typedef pair<lli, lli> pll;
+typedef vector<pii> vpii;
+typedef vector <pll> vpll;
+typedef long double ld;
+#define all(a) std::begin(a), std::end(a)
+
+const int INF = 0x3f3f3f3f;
+const lli LINF = 0x3f3f3f3f3f3f3f3f;
+
+template<typename T, typename T2> inline void _max(T &a, T2 b) { a = max((T)a, (T)b); }
+template<typename T, typename T2> inline void _min(T &a, T2 b) { a = min((T)a, (T)b); }
+
+#ifdef _DEBUG
+#define epr(...) fprintf(stderr,__VA_ARGS__)
+#else
+#define epr(...) 
+#endif
+#pragma endregion$end$
+
+void clear() {
+}
+
+void read() {
+}
+
+void solve() {
+}
+
+int main() {
+#ifdef _LOCAL_VAN
+	freopen("in.txt", "r", stdin);
+#endif
+	int t;
+	scanf("%d", &t);
+	while (t--) {
+		clear();
+		read();
+		solve();
+	}
+	return 0;
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>onetest</Title>
+      <Author>Van</Author>
+      <Description>onetest program template</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>onetest</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+		  <Literal Editable="true">
+			  <ID>DECLARATIONS</ID>
+			  <ToolTip>DECLARATIONS</ToolTip>
+			  <Default></Default>
+			  <Function>
+			  </Function>
+			</Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[
+#pragma region Include/Defines
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <limits.h>
+#include <vector>
+#include <stdlib.h>
+#include <algorithm>
+#include <memory.h>
+#include <string.h>
+#include <math.h>
+#include <string>
+#include <algorithm>
+#include <functional>
+#include <cassert>
+#include <map>
+#include <set>
+#include <iostream>
+#include <queue>
+#include <time.h>
+
+using namespace std;
+typedef long long lli;
+typedef vector<int> vi;
+typedef vector<lli> vli;
+typedef pair<int, int> pii;
+typedef pair<lli, lli> pll;
+typedef vector<pii> vpii;
+typedef vector <pll> vpll;
+typedef long double ld;
+#define all(a) std::begin(a), std::end(a)
+
+const int INF = 0x3f3f3f3f;
+const lli LINF = 0x3f3f3f3f3f3f3f3f;
+
+template<typename T, typename T2> inline void _max(T &a, T2 b) { a = max((T)a, (T)b); }
+template<typename T, typename T2> inline void _min(T &a, T2 b) { a = min((T)a, (T)b); }
+
+#ifdef _DEBUG
+#define epr(...) fprintf(stderr,__VA_ARGS__)
+#else
+#define epr(...) 
+#endif
+#pragma endregion$DECLARATIONS$
+
+void clear() {
+}
+
+void read() {
+}
+
+void solve() {
+}
+
+int main() {
+#ifdef _LOCAL_VAN
+	freopen("in.txt", "r", stdin);
+#endif
+	while (readi$end$) {
+		clear();
+		read();
+		solve();
+#ifndef _LOCAL_VAN
+		return 0;
+#endif
+	}
+	return 0;
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>topcoder</Title>
+      <Author>Van</Author>
+      <Description>topcoder program template</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>topcoder</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+		<Literal Editable="true">
+          <ID>ClassName</ID>
+          <ToolTip>Class name</ToolTip>
+          <Default>ABC</Default>
           <Function>
           </Function>
         </Literal>
-        <Literal Editable="true">
-          <ID>value</ID>
-          <ToolTip>Value to read</ToolTip>
-          <Default>val</Default>
-          <Function>
-          </Function>
-        </Literal>
-        <Literal Editable="true">
-          <ID>number_of_input</ID>
-          <ToolTip>number_of_input</ToolTip>
-          <Default>1</Default>
+		<Literal Editable="true">
+          <ID>MethodSignature</ID>
+          <ToolTip>Method signature</ToolTip>
+          <Default>int count()</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="cpp" Delimiter="$"><![CDATA[while(scanf("%$char$", $value$) == $number_of_input$) {
-	clear();
-    solve();
-}$end$]]></Code>
+      <Code Language="cpp" Delimiter="$"><![CDATA[
+#pragma region Include/Defines
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <limits.h>
+#include <vector>
+#include <stdlib.h>
+#include <algorithm>
+#include <memory.h>
+#include <string.h>
+#include <math.h>
+#include <string>
+#include <algorithm>
+#include <functional>
+#include <cassert>
+#include <map>
+#include <set>
+#include <iostream>
+#include <queue>
+#include <time.h>
+
+using namespace std;
+typedef long long lli;
+typedef vector<int> vi;
+typedef vector<lli> vli;
+typedef pair<int, int> pii;
+typedef pair<lli, lli> pll;
+typedef vector<pii> vpii;
+typedef vector <pll> vpll;
+typedef long double ld;
+#define all(a) std::begin(a), std::end(a)
+
+const int INF = 0x3f3f3f3f;
+const lli LINF = 0x3f3f3f3f3f3f3f3f;
+
+template<typename T, typename T2> inline void _max(T &a, T2 b) { a = max((T)a, (T)b); }
+template<typename T, typename T2> inline void _min(T &a, T2 b) { a = min((T)a, (T)b); }
+
+#ifdef _DEBUG
+#define epr(...) fprintf(stderr,__VA_ARGS__)
+#else
+#define epr(...) 
+#endif
+#pragma endregion
+
+class $ClassName$ {
+public :
+	$MethodSignature$ {
+		$end$
+	}
+};
+
+int main() {
+	$ClassName$ c;
+	
+	return 0;
+}]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

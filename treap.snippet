@@ -37,8 +37,6 @@
 				</Literal>
 			</Declarations>
 			<Code Language="cpp" Delimiter="$"><![CDATA[#pragma region Treap
-
-#pragma region Treap
 // TValue should have 
 // TRange operator+ (const TRange &r);
 // bool operator< (const TValue &v);
@@ -175,7 +173,7 @@ struct TreapNodeStackDynamic : TreapNodeStackBase {
 struct Treap {
 	TreapNodeStackBase* s;
 	TreapNode* root;
-	Treap() { s = new TreapNodeStackDynamic(); }
+	Treap(): root(NULL) { s = new TreapNodeStackDynamic(); }
 	Treap(TreapNode* _root): root(_root) { s = new TreapNodeStackDynamic(); }
 	Treap(TreapNodeStackBase* _s) : s(_s), root(NULL) {}
 	Treap(TreapNodeStackBase* _s, TreapNode* _root) : s(_s), root(_root) {}

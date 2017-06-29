@@ -74,7 +74,7 @@ void ones(mx a) {
     for (size_t i = 0; i < $MAXP$; i++)
         a[i][i] = 1;
 }
-void binPow(mx a, int p, mx r) {
+void binPow(mx a, lli p, mx r) {
     ones(r);
     mx b;
     memcpy(b, a, sizeof(mx));

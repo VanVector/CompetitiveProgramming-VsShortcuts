@@ -39,4 +39,75 @@
       <Code Language="cpp" Delimiter="$"><![CDATA[for ($type$ $index$ = 0; $index$ < $max$; $index$++) $end$]]></Code>
     </Snippet>
   </CodeSnippet>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>fr1</Title>
+      <Author>Microsoft Corporation</Author>
+      <Description>Code snippet for 'for' loop from 1</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>fr1</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>Control variable type</ToolTip>
+          <Default>int</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>index</ID>
+          <ToolTip>Index</ToolTip>
+          <Default>i</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>max</ID>
+          <ToolTip>Max length</ToolTip>
+          <Default>n</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[for ($type$ $index$ = 1; $index$ <= $max$; $index$++) $end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>frr</Title>
+      <Author>Microsoft Corporation</Author>
+      <Description>Code snippet for reverse 'for' loop</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>frr</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>index</ID>
+          <ToolTip>Index</ToolTip>
+          <Default>i</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>max</ID>
+          <ToolTip>Max length</ToolTip>
+          <Default>n</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[for (int $index$ = $max$ - 1; $index$ >= 0 ; $index$--) $end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
 </CodeSnippets>

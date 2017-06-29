@@ -30,48 +30,59 @@
         </Literal>
       </Declarations>
       <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Modular Arithmetic
-const int $MOD_NAME$ = $MOD_VALUE$;
-inline int add(const int a, const int b, const int mod = $MOD_NAME$) { return (a + b >= mod) ? (a + b - mod) : (a + b); }
-inline int sub(const int a, const int b, const int mod = $MOD_NAME$) { return (a - b < 0) ? (a - b + mod) : (a - b); }
-inline void inc(int &a, const int b, const int mod = $MOD_NAME$) { a = add(a, b, mod); }
-inline int negate(const int a, const int mod = $MOD_NAME$) { return mod - a; }
-inline int mul(const int a, const int b, const int mod = $MOD_NAME$) { return (a * 1ll * b) % mod; }
-int binPow(int b, int p, const int mod = $MOD_NAME$) {
-    int r = 1;
-    while (p) {
-        if (p & 1)
-            r = mul(r, b, mod);
-        b = mul(b, b, mod);
-        p >>= 1;
-    }
-    return r;
+int MOD = int(1e9) + 7;
+inline int add(const int a, const int b, const int mod = MOD) { return (a + b >= mod) ? (a + b - mod) : (a + b); }
+inline void _add(int &a, const int b, const int mod = MOD) { a = add(a, b, mod); }
+inline int sub(const int a, const int b, const int mod = MOD) { return (a - b < 0) ? (a - b + mod) : (a - b); }
+inline void _sub(int &a, const int b, const int mod = MOD) { a = sub(a, b, mod); }
+inline int negate(const int a, const int mod = MOD) { return mod - a; }
+inline int mul(const int a, const int b, const int mod = MOD) { return (a * 1ll * b) % mod; }
+inline void _mul(int &a, const int b, const int mod = MOD) { a = mul(a, b, mod); }
+int binPow(int b, lli p, const int mod = MOD) {
+	int r = 1;
+	while (p) {
+		if (p & 1) r = mul(r, b, mod);
+		b = mul(b, b, mod);
+		p >>= 1;
+	}
+	return r;
 }
-int inv(const int a, const int mod = $MOD_NAME$) {   // assuming that $MOD_NAME$ is prime (Fermat's little theorem)
-    int res = binPow(a, mod - 2, mod);
-    return res;
+int gcdex(int a, int b, int &x, int &y) {
+	if (!b) return x = 1, y = 0, a;
+	int px, py, res = gcdex(b, a % b, px, py);
+	return x = py, y = px - a / b * py, res;
 }
-inline int dvd(const int a, const int b, const int mod = $MOD_NAME$) { return mul(a, inv(b, mod), mod); } // b != 0
-inline int convert(int x, const int mod = $MOD_NAME$) { 
+int inv(const int a, const int mod = MOD) { // a and mod must be coprime
+	int x, y;
+	int g = gcdex(a, mod, x, y);
+	assert(g == 1);
+	x = (x % mod + mod) % mod;
+	return x;
+}
+inline int dvd(const int a, const int b, const int mod = MOD) { // b and mod must be coprime
+	int rev = inv(b, mod);
+	return mul(a, inv(b, mod), mod);
+} // b != 0
+inline void _dvd(int &a, const int b, const int mod = MOD) { a = dvd(a, b, mod); } // b and mod must be coprime
+inline int convert(int x, const int mod = MOD) {
 	int tx = x % mod + mod;
-	return tx > mod ? tx - mod : tx;
+	return tx >= mod ? tx - mod : tx;
 };
 struct mNum {
-	int x;
-	mNum(int _x) : x(convert(_x)) {}
-	mNum(lli _x) : x(convert(_x)) {}
+	int x, m;
+	mNum(int _x, int m = MOD) : x(convert(_x, m)), m(m) {}
+	mNum(lli _x, int m = MOD) : x(convert(_x, m)), m(m) {}
 };
-mNum operator +(mNum a, mNum b) { return mNum(add(a.x, b.x)); }
-mNum operator -(mNum a, mNum b) { return mNum(sub(a.x, b.x)); }
-mNum operator *(mNum a, mNum b) { return mNum(mul(a.x, b.x)); }
-mNum operator /(mNum a, mNum b) { return mNum(dvd(a.x, b.x)); }
-mNum operator +(lli x, mNum b) { return mNum(add(convert(x), b.x)); }
-mNum operator -(lli x, mNum b) { return mNum(sub(convert(x), b.x)); }
-mNum operator *(lli x, mNum b) { return mNum(mul(convert(x), b.x)); }
-mNum operator /(lli x, mNum b) { return mNum(dvd(convert(x), b.x)); }
-mNum operator +(mNum a, lli x) { return mNum(add(a.x, convert(x))); }
-mNum operator -(mNum a, lli x) { return mNum(sub(a.x, convert(x))); }
-mNum operator *(mNum a, lli x) { return mNum(mul(a.x, convert(x))); }
-mNum operator /(mNum a, lli x) { return mNum(dvd(a.x, convert(x))); }
+mNum operator +(mNum a, mNum b) { return mNum(add(a.x, b.x, a.m), a.m); }
+mNum operator -(mNum a, mNum b) { return mNum(sub(a.x, b.x, a.m), a.m); }
+mNum operator *(mNum a, mNum b) { return mNum(mul(a.x, b.x, a.m), a.m); }
+mNum operator /(mNum a, mNum b) { return mNum(dvd(a.x, b.x, a.m), a.m); }
+mNum operator ^(mNum a, lli x) { return mNum(binPow(a.x, x, a.m), a.m); }
+mNum operator +=(mNum &a, mNum b) { return a = a + b; }
+mNum operator -=(mNum &a, mNum b) { return a = a - b; }
+mNum operator *=(mNum &a, mNum b) { return a = a * b; }
+mNum operator /=(mNum &a, mNum b) { return a = a / b; }
+mNum operator ^=(mNum &a, lli x) { return a = a ^ x; }
 #pragma endregion
 $end$]]></Code>
     </Snippet>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>garner</Title>
+      <Author>Van</Author>
+      <Description>Chinese reminder theorem and garner</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>garner</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+      </Declarations>
+      <Code Language="cpp" Delimiter="$"><![CDATA[struct Multiplier {
+	int mul, pow, val;
+	Multiplier(int mul, int pow) : mul(mul), pow(pow) { val = binPow(mul, pow); }
+	bool operator <(const Multiplier &m) const { return mul == m.mul ? pow < m.pow : mul < m.mul; }
+	bool operator ==(const Multiplier &m) const { return mul == m.mul && pow == m.pow; }
+};
+
+int garner(map<Multiplier, int> &china) {
+	int sz = china.size();
+	vi x(sz, 0), a, p;
+	for (auto &pr : china) a.push_back(pr.second), p.push_back(pr.first.val);
+	vector<vi> r(sz, vi(sz));
+	for (int i = 0; i < sz; i++) for (int j = 0; j < sz; j++) if (i != j) r[i][j] = inv(p[i], p[j]);
+
+	for (int i = 0; i < sz; ++i) {
+		x[i] = a[i];
+		for (int j = 0; j < i; ++j)
+			x[i] = mul(r[j][i], sub(x[i] % p[i], x[j] % p[i], p[i]), p[i]);
+	}
+	int res = 0;
+	for (int i = sz - 1; i >= 0; i--) res = res * p[i] + x[i]; // use long arithmetics here
+	return res;
+}
+$end$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

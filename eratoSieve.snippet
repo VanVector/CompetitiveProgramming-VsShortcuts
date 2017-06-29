@@ -23,14 +23,49 @@
         </Literal>
       </Declarations>
       <Code Language="cpp" Delimiter="$" Kind="method decl"><![CDATA[#pragma region Erato Sieve
-const int MAX_PRIME = $MaxPrime$;
-int divisors[MAX_PRIME] = { 0 }, primes[MAX_PRIME / 10] = { 0 }, nPrimes = 0;
+const int MAX_PRIME = 1e6;
+int divisors[MAX_PRIME] = { 0 }, primes[MAX_PRIME] = { 0 }, nPrimes = 0;
 void generatePrimes() {
-    for (int i = 2; i < MAX_PRIME; i++) {
-        if (divisors[i] == 0) divisors[i] = primes[nPrimes++] = i;
-        for (int j = 0; j < nPrimes && i * primes[j] < MAX_PRIME; j++)
-            divisors[i * primes[j]] = min(divisors[i], primes[j]);
-    }
+	for (int i = 2; i < MAX_PRIME; i++) {
+		if (divisors[i] == 0) divisors[i] = primes[nPrimes++] = i;
+		for (int j = 0; j < nPrimes && i * primes[j] < MAX_PRIME; j++)
+			divisors[i * primes[j]] = min(divisors[i], primes[j]);
+	}
+}
+
+map<lli, int> factorize(lli x) { // max prime should be greater than or equal to the square root of x
+	map<lli, int> res;
+	for (int i = 0; 1ll * primes[i] * primes[i] <= x; i++) {
+		if (x % primes[i] == 0) {
+			int c = 0;
+			while (x % primes[i] == 0) c++, x /= primes[i];
+			res[primes[i]] = c;
+		}
+	}
+	if (x != 1) res[x] = 1;
+	return res;
+}
+
+lli phi(lli x) { // if known that x is prime return x - 1
+	auto f = factorize(x);
+	lli res = x;
+	for (auto &p : f) res -= res / p.first;
+	return res;
+}
+
+int getPrimitiveRoot(int m) {
+	// TODO check n to have any primitive root.
+	auto f = factorize(phi(m));
+	for (int g = 2; g < m; g++) {
+		set<int> s;
+		bool ok = true;
+		for (auto &p : f) {
+			int d = (m - 1) / p.first;
+			ok &= (mNum(g, m) ^ d).x != 1;
+		}
+		if (ok) return g;
+	}
+	return -1;
 }
 #pragma endregion]]></Code>
     </Snippet>

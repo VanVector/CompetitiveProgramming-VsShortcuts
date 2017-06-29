@@ -47,6 +47,12 @@ private:
 		//toSet[v] = -1;
 	}
 
+	$TRes$ merge($TRes$ &left, $TRes$ &right) {
+		//TODO combine
+		//t[v] = t[2 * v] + t[2 * v + 1];
+		//toSet[v] = -1;
+	}
+	
 	void build(int v, int tl, int tr) {
 		if (tl == tr) {
 			t[v] = a[tl];
@@ -56,10 +62,7 @@ private:
 		int tm = (tl + tr) / 2;
 		build(2 * v, tl, tm);
 		build(2 * v + 1, tm + 1, tr);
-
-        //TODO combine
-		//t[v] = t[2 * v] + t[2 * v + 1];
-		//toSet[v] = -1;
+        t[v] = merge(t[2 * v], t[2 * v + 1]);
 	}
 
 	$TRes$ query(int v, int tl, int tr, int l, int r) {
@@ -70,27 +73,23 @@ private:
 		int tm = (tl + tr) / 2;
 		$TRes$ lRes = query(2 * v, tl, tm, l, min(r, tm));
 		$TRes$ rRes = query(2 * v + 1, tm + 1, tr, max(l, tm + 1), r);
-
-        // TODO combine
-		// lli res = lRes + rRes;
-		// return res;
+		$TRes$ res = merge(lRes, rRes);
+        return res;
 	}
 
 	void update(int v, int tl, int tr, int l, int r, $TElement$ val) {
 		if (l > r) return;
 		if (tl == l && tr == r) {
 			// TODO range update
-			t[v] = 1ll * (tr - tl + 1) * val;
-			toSet[v] = val;
+			//t[v] = 1ll * (tr - tl + 1) * val;
+			//toSet[v] = val;
 			return;
 		}
 		push(v, tl, tr);
 		int tm = (tl + tr) / 2;
 		update(2 * v, tl, tm, l, min(r, tm), val);
 		update(2 * v + 1, tm + 1, tr, max(l, tm + 1), r, val);
-
-		// TODO combine
-		//t[v] = t[2 * v] + t[2 * v + 1];
+		t[v] = merge(t[2 * v], t[2 * v + 1]);
 	}
 
 public:
