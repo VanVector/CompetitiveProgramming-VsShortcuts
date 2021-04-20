@@ -28,7 +28,7 @@ int divisors[MAX_PRIME] = { 0 }, primes[MAX_PRIME] = { 0 }, nPrimes = 0;
 void generatePrimes() {
 	for (int i = 2; i < MAX_PRIME; i++) {
 		if (divisors[i] == 0) divisors[i] = primes[nPrimes++] = i;
-		for (int j = 0; j < nPrimes && i * primes[j] < MAX_PRIME; j++)
+		for (int j = 0; j < nPrimes && 1ll * i * primes[j] < MAX_PRIME; j++)
 			divisors[i * primes[j]] = min(divisors[i], primes[j]);
 	}
 }
